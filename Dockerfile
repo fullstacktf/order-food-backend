@@ -1,15 +1,9 @@
-FROM golang:1.16-alpine
-
+FROM golang:1.16-alpine as builder
+RUN mkdir /build
+ADD . /build/
+WORKDIR /build
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o comidit-app .
+FROM scratch
+COPY --from=builder /build/comidit-app /app/
 WORKDIR /app
-
-COPY go.mod ./
-COPY go.sum ./
-RUN go mod download
-
-COPY *.go ./
-
-RUN go build -o /comidit-app
-
-EXPOSE 8080
-
-CMD [ "/comidit-app" ]
+CMD ["./comidit-app"]
