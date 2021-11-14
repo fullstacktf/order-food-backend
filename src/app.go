@@ -16,7 +16,7 @@ func main() {
 	r.GET("/home", GetHomePage)
 	r.GET("/restaurants", GetAllRestaurants)
 	r.GET("/restaurants/:id", GetRestaurantById)
-	r.GET("/restaurants/:id/products", GetRestaurantProducts)
+	r.GET("/restaurants/:id/products", GetRestaurantProductsForClient)
 	r.POST("/auth/signup/client", PostSignUpClient)
 	r.POST("/auth/signin/client", PostSignInClient)
 	r.POST("/order", PostClientOrder)
@@ -27,11 +27,11 @@ func main() {
 	r.PUT("/profile", UpdateProfileData)
 
 	//  Restaurants
-	r.GET("/products", PostSignUpRestaurant)
 	r.POST("/auth/signup/restaurant", PostSignUpRestaurant)
 	r.POST("/auth/signin/restaurant", PostSignInRestaurant)
-	r.POST("/products", PostSignUpRestaurant)
-	r.PUT("/products/:id", UpdateRestaurantProductData)
+	r.GET("/products", GetRestaurantProductsForRestaurant)
+	r.POST("/products", PostRestaurantProduct)
+	r.PUT("/products/:id", UpdateRestaurantProductById)
 
 	// Server listening on port 3000
 	if err := r.Run(":3000"); err != nil {
@@ -61,7 +61,7 @@ func GetRestaurantById(c *gin.Context) {
 	c.String(http.StatusOK, message)
 }
 
-func GetRestaurantProducts(c *gin.Context) {
+func GetRestaurantProductsForClient(c *gin.Context) {
 	name := c.Param("id")
 	// Logica para traer todos los productos de un restaurante de la bbdd
 	// y devolverlos con el modelo definido para ellos
@@ -83,3 +83,13 @@ func GetProfileOrderById(c *gin.Context) {
 	message := "all good" + name
 	c.String(http.StatusOK, message)
 }
+
+func PostSignUpClient(c *gin.Context)                   {}
+func PostSignInClient(c *gin.Context)                   {}
+func PostClientOrder(c *gin.Context)                    {}
+func UpdateProfileData(c *gin.Context)                  {}
+func PostSignUpRestaurant(c *gin.Context)               {}
+func PostSignInRestaurant(c *gin.Context)               {}
+func GetRestaurantProductsForRestaurant(c *gin.Context) {} // No tenemos id como parametro, buscar manera de asociar al id de restaurante
+func PostRestaurantProduct(c *gin.Context)              {} // No tenemos id como parametro, buscar manera de asociar al id de restaurante
+func UpdateRestaurantProductById(c *gin.Context)        {} // No tenemos id como parametro, buscar manera de asociar al id de restaurante
