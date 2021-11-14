@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -23,14 +24,14 @@ func main() {
 	// Both
 	r.GET("/profile/orders", GetProfileOrders)
 	r.GET("/profile/orders/:id", GetProfileOrderById)
-	r.PUT("/profile", PutProfileData)
+	r.PUT("/profile", UpdateProfileData)
 
 	//  Restaurants
 	r.GET("/products", PostSignUpRestaurant)
 	r.POST("/auth/signup/restaurant", PostSignUpRestaurant)
 	r.POST("/auth/signin/restaurant", PostSignInRestaurant)
 	r.POST("/products", PostSignUpRestaurant)
-	r.PUT("/products/:id", PutRestaurantProductData)
+	r.PUT("/products/:id", UpdateRestaurantProductData)
 
 	// Server listening on port 3000
 	if err := r.Run(":3000"); err != nil {
