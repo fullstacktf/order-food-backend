@@ -18,12 +18,14 @@ func main() {
 	r.GET("/restaurants", GetAllRestaurants)
 	r.GET("/restaurants/:id", GetRestaurantById)
 	r.GET("/restaurants/:id/products", GetRestaurantProductsForClient)
-	r.POST("/restaurants/:id/order", PostClientOrder)
+	r.POST("/restaurants/:id/orders", PostClientOrder)
 	r.GET("/profile/orders", GetProfileOrders)
 	r.GET("/profile/orders/:id", GetProfileOrderById)
 	r.PUT("/profile", UpdateProfileData)
 
 	// Only clients with restaurant role
+	r.GET("/orders", GetRestaurantOrders)
+	r.PUT("/orders/:id", ModifyRestaurantOrder)
 	r.GET("/products", GetRestaurantProductsForRestaurant)
 	r.POST("/products", PostRestaurantProduct)
 	r.PUT("/products/:id", UpdateRestaurantProductById)
@@ -80,6 +82,8 @@ func GetProfileOrderById(c *gin.Context) {
 	c.String(http.StatusOK, message)
 }
 
+func GetRestaurantOrders(c *gin.Context)				{}
+func ModifyRestaurantOrder(c *gin.Context)				{}
 func PostSignUp(c *gin.Context)                   		{}
 func PostSignIn(c *gin.Context)                   		{}
 func PostClientOrder(c *gin.Context)                    {}
