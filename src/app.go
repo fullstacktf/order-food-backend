@@ -28,6 +28,7 @@ func main() {
 	r.POST("/products", PostRestaurantProduct)
 	r.PUT("/products/:id", UpdateRestaurantProductById)
 
+
 	// Server listening on port 3000
 	if err := r.Run(":3000"); err != nil {
 		log.Fatal(err.Error())
@@ -79,10 +80,10 @@ func GetProfileOrderById(c *gin.Context) {
 	c.String(http.StatusOK, message)
 }
 
-func PostSignUp(c *gin.Context)                   {}
-func PostSignIn(c *gin.Context)                   {}
+func PostSignUp(c *gin.Context)                   		{}
+func PostSignIn(c *gin.Context)                   		{}
 func PostClientOrder(c *gin.Context)                    {}
 func UpdateProfileData(c *gin.Context)                  {}
-func GetRestaurantProductsForRestaurant(c *gin.Context) {} // No tenemos id como parametro, buscar manera de asociar al id de restaurante
-func PostRestaurantProduct(c *gin.Context)              {} // No tenemos id como parametro, buscar manera de asociar al id de restaurante
-func UpdateRestaurantProductById(c *gin.Context)        {} // No tenemos id como parametro, buscar manera de asociar al id de restaurante
+func GetRestaurantProductsForRestaurant(c *gin.Context) {}
+func PostRestaurantProduct(c *gin.Context)              {}
+func UpdateRestaurantProductById(c *gin.Context)        {}
