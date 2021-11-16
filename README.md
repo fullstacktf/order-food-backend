@@ -41,14 +41,14 @@
 
 ## About Comidit.App
 
-<p align="center"><strong>Comidit.App makes your orders easy and fast, accompaning you in your everyday life.</strong></p>
+<p align="center"><strong>Comidit.App makes your orders easy and fast, accompanying you in your everyday life.</strong></p>
 
-<p align="center">We know there are a lot of websites where you could order your food but...Are you sure that they are THIS AMAZING? 💛 </p>
-<br/>
+<p align="center">We know there's a lot of websites where you could order your food but... Are you sure they are THIS AMAZING? 💛 </p>
 
-Our goal is provide a free, easy, and responsive web application for restaurants who wants make easier the process of managing their orders in addition stay closer to their customers giving the best delivery service. Comidit.App is designed for people, providing an intuitive, effortless offering you the most valuable restaurants of your area.
+Our goal is to provide a free, easy, and responsive web application for restaurants who want to make the process of managing their orders easier, in addition to staying closer to their customers while offering the best delivery service. Comidit.App is designed for people, providing an intuitive, effortless offering of the most valuable restaurants of your area.
 
-Comidit.App is our final project of the Fullstack's Development course organized by the Industrial Business School in Spain. This project was realized since September to December 2021 with non commercial purposes.
+Comidit.App is our final project for the Fullstack's Development course organized by the Industrial Business School in Spain. This project was developed from September to December 2021 with non commercial purposes.
+
 
 ### Built With
 
@@ -87,13 +87,13 @@ npm install
 
 ## Usage
 
-We still working on Comidit.App until we finish you can [check our process](https://github.com/fullstacktf/order-food-backend/projects/1) (kanban board).
+We're still working on Comidit.App.  Meanwhile, you can [check our progress](https://github.com/fullstacktf/order-food-backend/projects/1) (kanban board).
 
 <small><p align="right">(<a href="#top">back to top</a>)</p></small>
 
 ## Roadmap
 
-According to our MVP we will develop this features. The not checked ones will be extra features that we would like to do.
+According to our MVP we will develop this features. The unchecked ones are extra features we would like to work on after.
 
 - [x] Restaurants
   - [x] Manage Menu and Products
@@ -132,13 +132,13 @@ Added to that we use [**MIT License**](LICENSE.md).
 
 About our team:
 
-- **Manuel** González - [GitHub · Profile](https://github.com/ManuYuzu)
+- **Manuel** González Afonso - [GitHub · Profile](https://github.com/ManuYuzu)
 
-- **José** Nicolás Cabrera - [GitHub · Profile](https://github.com/jncabdom)
+- **Nicolás** Cabrera Domínguez- [GitHub · Profile](https://github.com/jncabdom)
 
 - **Paula** Pérez Tafalla -  [GitHub · Profile](https://github.com/paolaski) - [Paolaski.es · Website](https://www.paolaski.es/)
 
-- **Nestor** Torres Diaz - [GitHub · Profile](https://github.com/dtote)
+- **Néstor** Torres Diaz - [GitHub · Profile](https://github.com/dtote)
 
 <small><p align="right">(<a href="#top">back to top</a>)</p></small>
 
