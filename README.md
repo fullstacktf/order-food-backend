@@ -112,7 +112,7 @@ According to our MVP we will develop this features. The not checked ones will be
 
 ## License
 
-<center><img src="https://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png"/></center>
+<p align="center"><img src="https://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png"/></p>
 
 Distributed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">**Creative Commons BY-NC-SA**</a>. This license allows reusers to distribute, remix, adapt, and build upon the material in any medium or  format for noncommercial purposes only, and only so long as attribution  is given to the creator. If you remix, adapt, or build upon the  material, you must license the modified material under identical terms. CC BY-NC-SA includes the following elements:
 
