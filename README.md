@@ -134,7 +134,7 @@ About our team:
 
 - **Manuel** González Afonso - [GitHub · Profile](https://github.com/ManuYuzu)
 
-- **José** Nicolás Cabrera Domínguez- [GitHub · Profile](https://github.com/jncabdom)
+- **Nicolás** Cabrera Domínguez- [GitHub · Profile](https://github.com/jncabdom)
 
 - **Paula** Pérez Tafalla -  [GitHub · Profile](https://github.com/paolaski) - [Paolaski.es · Website](https://www.paolaski.es/)
 
