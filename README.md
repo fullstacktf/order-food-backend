@@ -6,9 +6,11 @@
 
 <h3 align="center">Comidit.App · Back-End</h3>
 
-<p align="center">Final project linked to <strong>Fullstack's Development</strong> course organized by <strong>Industrial Business School</strong><br/><small>From September 2021 to December 2021</small></p>
-<br/>
-<center><a href="#">View Demo</a> · <a href="https://github.com/fullstacktf/order-food-backend/issues">Report a Bug</a> · <a href="https://github.com/fullstacktf/order-food-frontend">Front-End Repository »</a></center>
+<p align="center">Final project linked to <strong>Fullstack's Development</strong> course organized by <strong>Industrial Business School</strong></p>
+
+<p align="center"><small>From September 2021 to December 2021</small></p>
+
+<p align="center"><a href="#">View Demo</a> · <a href="https://github.com/fullstacktf/order-food-backend/issues">Report a Bug</a> · <a href="https://github.com/fullstacktf/order-food-frontend">Front-End Repository »</a></p>
 
 ## Index
 
@@ -111,7 +113,7 @@ According to our MVP we will develop this features. The not checked ones will be
 
 ## License
 
-<center><img src="https://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png"/></center>
+<p align="center"><img src="https://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png"/></p>
 
 Distributed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">**Creative Commons BY-NC-SA**</a>. This license allows reusers to distribute, remix, adapt, and build upon the material in any medium or  format for noncommercial purposes only, and only so long as attribution  is given to the creator. If you remix, adapt, or build upon the  material, you must license the modified material under identical terms. CC BY-NC-SA includes the following elements:
 
@@ -144,7 +146,7 @@ About our team:
 
 ![css img](https://img.shields.io/twitter/url?color=lavender&label=figma&logo=figma&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend) ![adobe img](https://img.shields.io/twitter/url?color=gold&label=illustrator&logo=adobeillustrator&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend)
 
-<center><img src="/_images/prototype.png"/></center>
+<p align="center"><img src="/_images/prototype.png"/></p>
 
 - Prototype made with Figma: [Desktop MockUp](https://www.figma.com/proto/aHNeGVsCf51rHtUjCpC9O4/Order-Food---Curso-Fullstack-EOI-2021-team-library?node-id=314%3A5&starting-point-node-id=314%3A5) - [Mobile MockUp](https://www.figma.com/proto/aHNeGVsCf51rHtUjCpC9O4/Order-Food---Curso-Fullstack-EOI-2021-team-library?node-id=430%3A21&starting-point-node-id=430%3A21)
 - Logotype & Branding: Adobe Illustrator, Adobe Color
