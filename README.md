@@ -38,12 +38,14 @@
 
 
 
-<div style="text-align: right"><small>(<a href="#top">back to top</a>)</small></div>
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ## 🍔 About Comidit.App
 
 <center><strong>Comidit.App makes your orders easy and fast, accompaning you in your everyday life.</strong></center>
+
 <center>We know there are a lot of websites where you could order your food but...Are you sure that they are THIS AMAZING? 💛 </center>
+<br/>
 
 Our goal is provide a free, easy, and responsive web application for restaurants who wants make easier the process of managing their orders in addition stay closer to their customers giving the best delivery service. Comidit.App is designed for people, providing an intuitive, effortless offering you the most valuable restaurants of your area.
 
@@ -51,10 +53,12 @@ Comidit.App is our final project of the Fullstack's Development course organized
 
 ### Built With
 
-![go img](https://img.shields.io/twitter/url?color=cyan&label=golang&logo=go&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend) ![img gingonic](https://img.shields.io/twitter/url?color=lightcyan&label=gingonic&logo=go&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend) ![img mongodb](https://img.shields.io/twitter/url?color=light&label=mongodb&logo=mongodb&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend) ![img stripe](https://img.shields.io/twitter/url?color=blueviolet&label=stripe&logo=stripe&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend)
-![react img](https://img.shields.io/twitter/url?color=deepskyblue&label=react.js&logo=react&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend) ![html img](https://img.shields.io/twitter/url?color=orange&label=HTML&logo=html5&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend) ![css img](https://img.shields.io/twitter/url?color=blue&label=CSS&logo=css3&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend) ![css img](https://img.shields.io/twitter/url?color=dodgerblue&label=typescript&logo=typescript&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend) ![img sass](https://img.shields.io/twitter/url?color=hotpink&label=sass&logo=sass&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend) ![css img](https://img.shields.io/twitter/url?color=darkturquoise&label=tailwind&logo=tailwindcss&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend)
+![go img](https://img.shields.io/twitter/url?color=cyan&label=golang&logo=go&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend) ![img gingonic](https://img.shields.io/twitter/url?color=lightcyan&label=gingonic&logo=go&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend) ![img mongodb](https://img.shields.io/twitter/url?color=light&label=mongodb&logo=mongodb&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend)
 
-<div style="text-align: right"><small>(<a href="#top">back to top</a>)</small></div>
+![react img](https://img.shields.io/twitter/url?color=deepskyblue&label=react.js&logo=react&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend) ![html img](https://img.shields.io/twitter/url?color=orange&label=HTML&logo=html5&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend) ![css img](https://img.shields.io/twitter/url?color=blue&label=CSS&logo=css3&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend) ![css img](https://img.shields.io/twitter/url?color=dodgerblue&label=typescript&logo=typescript&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend) ![img sass](https://img.shields.io/twitter/url?color=hotpink&label=sass&logo=sass&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend) ![css img](https://img.shields.io/twitter/url?color=darkturquoise&label=tailwind&logo=tailwindcss&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend)
+![img stripe](https://img.shields.io/twitter/url?color=blueviolet&label=stripe&logo=stripe&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend)
+
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Getting Started
 
@@ -80,28 +84,31 @@ https://github.com/fullstacktf/order-food-backend.git
 npm install
 ```
 
-<div style="text-align: right"><small>(<a href="#top">back to top</a>)</small></div>
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Usage
 
 We still working on Comidit.App until we finish you can [check our process](https://github.com/fullstacktf/order-food-backend/projects/1) (kanban board). 
 
-<div style="text-align: right"><small>(<a href="#top">back to top</a>)</small></div>
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Roadmap
-
+According to our MVP we will develop this features. The not checked ones will be extra features that we would like to do.
 - [x] Restaurants
   - [x] Manage Menu and Products
   - [x] Manage Orders
-  - [ ] Manage Workers
-  - [ ] Manage Own Info
+  - [x] Manage Workers
+  - [x] Manage Own Info
+  - [ ] Offer tracking delivery (map)
 - [x] Clients
   - [x] Order Food
   - [x] Check Status
   - [x] Manage Own Info
   - [x] Delete Account
+  - [ ] Mark & Check your favourite restaurants
+  - [ ] Give a review (stars)
 
-<div style="text-align: right"><small>(<a href="#top">back to top</a>)</small></div>
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ## License
 
@@ -110,9 +117,7 @@ We still working on Comidit.App until we finish you can [check our process](http
 Distributed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">**Creative Commons BY-NC-SA**</a>. This license allows reusers to distribute, remix, adapt, and build upon the material in any medium or  format for noncommercial purposes only, and only so long as attribution  is given to the creator. If you remix, adapt, or build upon the  material, you must license the modified material under identical terms. CC BY-NC-SA includes the following elements:
 
 <center>
-    <img alt="by img" src="https://mirrors.creativecommons.org/presskit/icons/by.png"/>
-	<img alt="nc img" src="https://mirrors.creativecommons.org/presskit/icons/nc.png"/>
-    <img alt="sa img" src="https://mirrors.creativecommons.org/presskit/icons/sa.png"/>
+    <img alt="by img" src="https://mirrors.creativecommons.org/presskit/icons/by.png"/> <img alt="nc img" src="https://mirrors.creativecommons.org/presskit/icons/nc.png"/> <img alt="sa img" src="https://mirrors.creativecommons.org/presskit/icons/sa.png"/>
 </center>
 
 - **BY** - Credit must be given to the creator
@@ -122,7 +127,7 @@ Distributed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">*
 
 Added to that we use [**MIT License**](LICENSE.md). 
 
-<div style="text-align: right"><small>(<a href="#top">back to top</a>)</small></div>
+<div style="text-align:right"><small>(<a href="#top">back to top</a>)</small></div>
 
 ## Contact
 
@@ -136,7 +141,7 @@ About our team:
 
 - **Nestor** Torres Diaz - [GitHub · Profile](https://github.com/dtote)
 
-  <div style="text-align: right"><small>(<a href="#top">back to top</a>)</small></div>
+  <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Acknowledgements
 
@@ -148,4 +153,4 @@ About our team:
 - Logotype & Branding: Adobe Illustrator, Adobe Color
 - Images: [Unsplash](https://unsplash.com/), [Freepik](https://www.freepik.es/home), [Emojipedia](https://emojipedia.org/)
 
-<div style="text-align: right"><small>(<a href="#top">back to top</a>)</small></div>
+<p align="right">(<a href="#top">back to top</a>)</p>
