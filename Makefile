@@ -1,13 +1,15 @@
 .DEFAULT_GOAL := build
 
-stop: 
+stop-mongo: 
 	@echo "🍉 Stopping mongo database container..."
 	@./.scripts/stop_mongo.sh
 
-server:  
+start-server:  
 	@echo "🍔 Starting server..."
 	@./.scripts/run_server.sh
 
-mongo:  
+start-mongo:  
 	@echo "🥑 Starting mongo database..."
 	@./.scripts/build_mongo.sh
+
+build: start-mongo start-server
