@@ -1,8 +1,8 @@
-## README.md
+# README.md
 
-<a href=""><img src="https://img.shields.io/github/issues/fullstacktf/order-food-backend?color=blue&amp;style=for-the-badge"/></a><a href="https://github.com/fullstacktf/order-food-backend/blob/main/LICENSE.txt"><img src="https://camo.githubusercontent.com/111148992d0253f8d5e36b62087d48a9eabb1d7244b2b7316214f47d5c9a8781/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f6c6963656e73652f6f74686e65696c647265772f426573742d524541444d452d54656d706c6174652e7376673f7374796c653d666f722d7468652d6261646765" alt="MIT License" data-canonical-src="https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge" style="max-width: 100%;"></a>
+<a href=""><img src="https://img.shields.io/github/issues/fullstacktf/order-food-backend?color=blue&amp;style=for-the-badge"/></a> <a href="https://github.com/fullstacktf/order-food-backend/blob/main/LICENSE.txt"><img src="https://camo.githubusercontent.com/111148992d0253f8d5e36b62087d48a9eabb1d7244b2b7316214f47d5c9a8781/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f6c6963656e73652f6f74686e65696c647265772f426573742d524541444d452d54656d706c6174652e7376673f7374796c653d666f722d7468652d6261646765" alt="MIT License" data-canonical-src="https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge" style="max-width: 100%;"></a>
 
-![comiditapp.logo](https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/hamburger_1f354.png)
+<center><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/hamburger_1f354.png"></center>
 
 <center><h3>Comidit.App · Back-End</h3></center>
 
@@ -11,7 +11,7 @@
 
 <center><a href="#">View Demo</a> · <a href="https://github.com/fullstacktf/order-food-backend/issues">Report a Bug</a> · <a href="https://github.com/fullstacktf/order-food-frontend">Front-End Repository »</a></center>
 
-### Index
+## Index
 
 <details>
 	<summary>Table of Contents</summary>
@@ -51,7 +51,7 @@ Comidit.App is our final project of the Fullstack's Development course organized
 
 ### Built With
 
-![go img](https://img.shields.io/twitter/url?color=cyan&label=golang&logo=go&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend)![img gingonic](https://img.shields.io/twitter/url?color=lightcyan&label=gingonic&logo=go&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend)![](https://img.shields.io/twitter/url?color=light&label=mongodb&logo=mongodb&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend) 
+![go img](https://img.shields.io/twitter/url?color=cyan&label=golang&logo=go&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend)![img gingonic](https://img.shields.io/twitter/url?color=lightcyan&label=gingonic&logo=go&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend)![](https://img.shields.io/twitter/url?color=light&label=mongodb&logo=mongodb&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend)![img stripe](https://img.shields.io/twitter/url?color=blueviolet&label=stripe&logo=stripe&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend) 
 
 ![react img](https://img.shields.io/twitter/url?color=deepskyblue&label=react.js&logo=react&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend)![html img](https://img.shields.io/twitter/url?color=orange&label=HTML&logo=html5&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend)![css img](https://img.shields.io/twitter/url?color=blue&label=CSS&logo=css3&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend)![css img](https://img.shields.io/twitter/url?color=dodgerblue&label=typescript&logo=typescript&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend)![img sass](https://img.shields.io/twitter/url?color=hotpink&label=sass&logo=sass&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend)![css img](https://img.shields.io/twitter/url?color=darkturquoise&label=tailwind&logo=tailwindcss&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend)
 
@@ -91,7 +91,16 @@ We still working on Comidit.App until we finish you can [check our process](http
 
 ## Roadmap
 
-- [x] Restaurants: Offer Menú
+- [x] Restaurants
+  - [x] Manage Menu and Products
+  - [x] Manage Orders
+  - [ ] Manage Workers
+  - [ ] Manage Own Info
+- [x] Clients
+  - [x] Order Food
+  - [x] Check Status
+  - [x] Manage Own Info
+  - [x] Delete Account
 
 <div style="text-align: right"><small>(<a href="#top">back to top</a>)</small></div>
 
@@ -112,7 +121,7 @@ Distributed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">*
 
 - **SA** - Adaptations must be shared under the same terms
 
-Added to that we use [**MIT License**](https://github.com/fullstacktf/order-food-backend/blob/main/LICENSE.txt). 
+Added to that we use [**MIT License**](LICENSE.md). 
 
 <div style="text-align: right"><small>(<a href="#top">back to top</a>)</small></div>
 
@@ -132,13 +141,13 @@ About our team:
 
 ## Acknowledgements
 
-![css img](https://img.shields.io/twitter/url?color=lavender&label=figma&logo=figma&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend)
+![css img](https://img.shields.io/twitter/url?color=lavender&label=figma&logo=figma&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend) ![adobe img](https://img.shields.io/twitter/url?color=gold&label=illustrator&logo=adobeillustrator&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend)
+
+![prototype](/_images/prototype.png)
 
 - Prototype made with Figma: [Desktop MockUp](https://www.figma.com/proto/aHNeGVsCf51rHtUjCpC9O4/Order-Food---Curso-Fullstack-EOI-2021-team-library?node-id=314%3A5&starting-point-node-id=314%3A5) - [Mobile MockUp](https://www.figma.com/proto/aHNeGVsCf51rHtUjCpC9O4/Order-Food---Curso-Fullstack-EOI-2021-team-library?node-id=430%3A21&starting-point-node-id=430%3A21)
-
 - Logotype & Branding: Adobe Illustrator, Adobe Color
-  - ![](./__images/color-palette.png)
-- Images: [Unsplash](https://unsplash.com/), [Freepik](https://www.freepik.es/home), [Emojipedia]()
+- Images: [Unsplash](https://unsplash.com/), [Freepik](https://www.freepik.es/home), [Emojipedia](https://emojipedia.org/)
 
 <div style="text-align: right"><small>(<a href="#top">back to top</a>)</small></div>
 
