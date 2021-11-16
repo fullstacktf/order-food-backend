@@ -47,13 +47,12 @@
 
 Our goal is provide a free, easy, and responsive web application for restaurants who wants make easier the process of managing their orders in addition stay closer to their customers giving the best delivery service. Comidit.App is designed for people, providing an intuitive, effortless offering you the most valuable restaurants of your area.
 
-Comidit.App is our final project of the Fullstack's Development course organized by the Industrial Business School in Spain. This project was realized since September to December 2021 with non commercial purposes. 
+Comidit.App is our final project of the Fullstack's Development course organized by the Industrial Business School in Spain. This project was realized since September to December 2021 with non commercial purposes.
 
 ### Built With
 
-![go img](https://img.shields.io/twitter/url?color=cyan&label=golang&logo=go&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend)![img gingonic](https://img.shields.io/twitter/url?color=lightcyan&label=gingonic&logo=go&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend)![](https://img.shields.io/twitter/url?color=light&label=mongodb&logo=mongodb&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend)![img stripe](https://img.shields.io/twitter/url?color=blueviolet&label=stripe&logo=stripe&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend) 
-
-![react img](https://img.shields.io/twitter/url?color=deepskyblue&label=react.js&logo=react&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend)![html img](https://img.shields.io/twitter/url?color=orange&label=HTML&logo=html5&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend)![css img](https://img.shields.io/twitter/url?color=blue&label=CSS&logo=css3&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend)![css img](https://img.shields.io/twitter/url?color=dodgerblue&label=typescript&logo=typescript&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend)![img sass](https://img.shields.io/twitter/url?color=hotpink&label=sass&logo=sass&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend)![css img](https://img.shields.io/twitter/url?color=darkturquoise&label=tailwind&logo=tailwindcss&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend)
+![go img](https://img.shields.io/twitter/url?color=cyan&label=golang&logo=go&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend) ![img gingonic](https://img.shields.io/twitter/url?color=lightcyan&label=gingonic&logo=go&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend) ![img mongodb](https://img.shields.io/twitter/url?color=light&label=mongodb&logo=mongodb&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend) ![img stripe](https://img.shields.io/twitter/url?color=blueviolet&label=stripe&logo=stripe&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend)
+![react img](https://img.shields.io/twitter/url?color=deepskyblue&label=react.js&logo=react&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend) ![html img](https://img.shields.io/twitter/url?color=orange&label=HTML&logo=html5&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend) ![css img](https://img.shields.io/twitter/url?color=blue&label=CSS&logo=css3&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend) ![css img](https://img.shields.io/twitter/url?color=dodgerblue&label=typescript&logo=typescript&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend) ![img sass](https://img.shields.io/twitter/url?color=hotpink&label=sass&logo=sass&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend) ![css img](https://img.shields.io/twitter/url?color=darkturquoise&label=tailwind&logo=tailwindcss&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend)
 
 <div style="text-align: right"><small>(<a href="#top">back to top</a>)</small></div>
 
@@ -143,11 +142,10 @@ About our team:
 
 ![css img](https://img.shields.io/twitter/url?color=lavender&label=figma&logo=figma&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend) ![adobe img](https://img.shields.io/twitter/url?color=gold&label=illustrator&logo=adobeillustrator&logoColor=white&style=for-the-badge&url=https%3A%2F%2Fgithub.com%2Ffullstacktf%2Forder-food-backend)
 
-![prototype](/_images/prototype.png)
+<center><img src="/_images/prototype.png"/></center>
 
 - Prototype made with Figma: [Desktop MockUp](https://www.figma.com/proto/aHNeGVsCf51rHtUjCpC9O4/Order-Food---Curso-Fullstack-EOI-2021-team-library?node-id=314%3A5&starting-point-node-id=314%3A5) - [Mobile MockUp](https://www.figma.com/proto/aHNeGVsCf51rHtUjCpC9O4/Order-Food---Curso-Fullstack-EOI-2021-team-library?node-id=430%3A21&starting-point-node-id=430%3A21)
 - Logotype & Branding: Adobe Illustrator, Adobe Color
 - Images: [Unsplash](https://unsplash.com/), [Freepik](https://www.freepik.es/home), [Emojipedia](https://emojipedia.org/)
 
 <div style="text-align: right"><small>(<a href="#top">back to top</a>)</small></div>
-
