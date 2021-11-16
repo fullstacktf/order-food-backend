@@ -7,8 +7,9 @@
 <h3 align="center">Comidit.App · Back-End</h3>
 
 <p align="center">Final project linked to <strong>Fullstack's Development</strong> course organized by <strong>Industrial Business School</strong></p>
+
 <p align="center"><small>From September 2021 to December 2021</small></p>
-<br/>
+
 <p align="center"><a href="#">View Demo</a> · <a href="https://github.com/fullstacktf/order-food-backend/issues">Report a Bug</a> · <a href="https://github.com/fullstacktf/order-food-frontend">Front-End Repository »</a></p>
 
 ## Index
