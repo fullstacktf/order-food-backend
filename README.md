@@ -41,9 +41,9 @@
 
 ## About Comidit.App
 
-<center><strong>Comidit.App makes your orders easy and fast, accompaning you in your everyday life.</strong></center>
+<p align="center"><strong>Comidit.App makes your orders easy and fast, accompaning you in your everyday life.</strong></p>
 
-<center>We know there are a lot of websites where you could order your food but...Are you sure that they are THIS AMAZING? 💛 </center>
+<p align="center">We know there are a lot of websites where you could order your food but...Are you sure that they are THIS AMAZING? 💛 </p>
 <br/>
 
 Our goal is provide a free, easy, and responsive web application for restaurants who wants make easier the process of managing their orders in addition stay closer to their customers giving the best delivery service. Comidit.App is designed for people, providing an intuitive, effortless offering you the most valuable restaurants of your area.
