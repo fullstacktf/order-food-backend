@@ -1,13 +1,12 @@
 # README.md
 
-<a href="https://github.com/fullstacktf/order-food-backend/issues"><img src="https://img.shields.io/github/issues/fullstacktf/order-food-backend?color=blue&amp;style=for-the-badge"/></a> <a href="https://github.com/fullstacktf/order-food-backend/blob/main/LICENSE.txt"><img src="https://camo.githubusercontent.com/111148992d0253f8d5e36b62087d48a9eabb1d7244b2b7316214f47d5c9a8781/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f6c6963656e73652f6f74686e65696c647265772f426573742d524541444d452d54656d706c6174652e7376673f7374796c653d666f722d7468652d6261646765" alt="MIT License" data-canonical-src="https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge" style="max-width: 100%;"></a>
+<a href="https://github.com/fullstacktf/order-food-backend/issues"><img src="https://img.shields.io/github/issues/fullstacktf/order-food-backend?color=blue&amp;style=for-the-badge"/></a> <a href="./LICENSE.md"><img src="https://camo.githubusercontent.com/111148992d0253f8d5e36b62087d48a9eabb1d7244b2b7316214f47d5c9a8781/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f6c6963656e73652f6f74686e65696c647265772f426573742d524541444d452d54656d706c6174652e7376673f7374796c653d666f722d7468652d6261646765" alt="MIT License" data-canonical-src="https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge" style="max-width: 100%;"></a>
 
 <p align="center"><img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/hamburger_1f354.png"></p>
 
-<center><h3>Comidit.App · Back-End</h3></center>
+<h3 align="center">Comidit.App · Back-End</h3>
 
-<center>Final project linked to <strong>Fullstack's Development</strong> course organized by <strong>Industrial Business School</strong></center>
-<center><small>From September 2021 to December 2021</small></center>
+<p align="center">Final project linked to <strong>Fullstack's Development</strong> course organized by <strong>Industrial Business School</strong><br/><small>From September 2021 to December 2021</small></p>
 <br/>
 <center><a href="#">View Demo</a> · <a href="https://github.com/fullstacktf/order-food-backend/issues">Report a Bug</a> · <a href="https://github.com/fullstacktf/order-food-frontend">Front-End Repository »</a></center>
 
@@ -38,7 +37,7 @@
 
 <small><p align="right">(<a href="#top">back to top</a>)</p></small>
 
-## 🍔 About Comidit.App
+## About Comidit.App
 
 <center><strong>Comidit.App makes your orders easy and fast, accompaning you in your everyday life.</strong></center>
 
