@@ -11,6 +11,6 @@ server: permissions
 	@echo "🍔 Starting server"
 	@./.scripts/run_server.sh
 
-mongo: permissions stop
+mongo: permissions 
 	@echo "🥑 Starting mongo database..."
 	@./.scripts/build_mongo.sh

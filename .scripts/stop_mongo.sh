@@ -1,1 +1,1 @@
-docker stop mongo # stops the mongo container
+docker stop mongo || true # stops the mongo container
