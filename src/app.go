@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 )
@@ -30,9 +31,8 @@ func main() {
 	r.POST("/products", PostRestaurantProduct)
 	r.PUT("/products/:id", UpdateRestaurantProductById)
 
-
 	// Server listening on port 3000
-	if err := r.Run(":3000"); err != nil {
+	if err := r.Run(os.Getenv("PORT")); err != nil {
 		log.Fatal(err.Error())
 	}
 }
@@ -82,10 +82,10 @@ func GetProfileOrderById(c *gin.Context) {
 	c.String(http.StatusOK, message)
 }
 
-func GetRestaurantOrders(c *gin.Context)				{}
-func ModifyRestaurantOrder(c *gin.Context)				{}
-func PostSignUp(c *gin.Context)                   		{}
-func PostSignIn(c *gin.Context)                   		{}
+func GetRestaurantOrders(c *gin.Context)                {}
+func ModifyRestaurantOrder(c *gin.Context)              {}
+func PostSignUp(c *gin.Context)                         {}
+func PostSignIn(c *gin.Context)                         {}
 func PostClientOrder(c *gin.Context)                    {}
 func UpdateProfileData(c *gin.Context)                  {}
 func GetRestaurantProductsForRestaurant(c *gin.Context) {}

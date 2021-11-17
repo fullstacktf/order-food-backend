@@ -1,4 +1,4 @@
 #!/bin/bash
 
 # Run the go server
-go run src/app.go 
+PORT=:3000 go run src/app.go 
