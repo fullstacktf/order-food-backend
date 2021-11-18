@@ -1,9 +1,10 @@
 package database
 
-import(
+import (
+	"log"
+
 	"github.com/kamva/mgm/v3"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"log"
 )
 
 const MONGODB_URI = "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000"
@@ -16,4 +17,3 @@ func init() {
 		log.Fatal(err)
 	}
 }
-
