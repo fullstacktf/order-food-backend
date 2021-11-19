@@ -3,10 +3,10 @@ package main
 import (
 	"log"
 
-	auth "comiditapp/api/src/routes/auth"
-	client "comiditapp/api/src/routes/client"
-	profile "comiditapp/api/src/routes/profile"
-	restaurant "comiditapp/api/src/routes/restaurant"
+	auth "comiditapp/api/src/controllers/auth"
+	client "comiditapp/api/src/controllers/client"
+	profile "comiditapp/api/src/controllers/profile"
+	restaurant "comiditapp/api/src/controllers/restaurant"
 
 	"github.com/gin-gonic/gin"
 )
