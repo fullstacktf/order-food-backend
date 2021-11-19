@@ -47,7 +47,8 @@
 
 Our goal is to provide a free, easy, and responsive web application for restaurants who want to make the process of managing their orders easier, in addition to staying closer to their customers while offering the best delivery service. Comidit.App is designed for people, providing an intuitive, effortless offering of the most valuable restaurants of your area.
 
-CComidit.App is our final project for the Fullstack's Development course organized by the Industrial Business School in Spain. This project was developed from September to December 2021 with non commercial purposes.
+Comidit.App is our final project for the Fullstack's Development course organized by the Industrial Business School in Spain. This project was developed from September to December 2021 with non commercial purposes.
+
 
 ### Built With
 
@@ -131,9 +132,9 @@ Added to that we use [**MIT License**](LICENSE.md).
 
 About our team:
 
-- **Manuel** González - [GitHub · Profile](https://github.com/ManuYuzu)
+- **Manuel** González Afonso - [GitHub · Profile](https://github.com/ManuYuzu)
 
-- **José** Nicolás Cabrera - [GitHub · Profile](https://github.com/jncabdom)
+- **Nicolás** Cabrera Domínguez- [GitHub · Profile](https://github.com/jncabdom)
 
 - **Paula** Pérez Tafalla -  [GitHub · Profile](https://github.com/paolaski) - [Paolaski.es · Website](https://www.paolaski.es/)
 

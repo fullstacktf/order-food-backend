@@ -2,13 +2,12 @@ package main
 
 import (
 	"log"
-
+	"os"
+  "github.com/gin-gonic/gin"
 	auth "comiditapp/api/src/controllers/auth"
 	client "comiditapp/api/src/controllers/client"
 	profile "comiditapp/api/src/controllers/profile"
 	restaurant "comiditapp/api/src/controllers/restaurant"
-
-	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -22,7 +21,8 @@ func main() {
 	r.Run()
 
 	// Server listening on port 3000
-	if err := r.Run(":3000"); err != nil {
+	if err := r.Run(os.Getenv("PORT")); err != nil {
 		log.Fatal(err.Error())
 	}
 }
+
