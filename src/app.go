@@ -5,7 +5,7 @@ import (
 	client "comiditapp/api/src/controllers/client"
 	profile "comiditapp/api/src/controllers/profile"
 	restaurant "comiditapp/api/src/controllers/restaurant"
-	database "comiditapp/api/src/database"
+	"comiditapp/api/src/database"
 	"comiditapp/api/src/env"
 	"log"
 
@@ -13,6 +13,8 @@ import (
 )
 
 func main() {
+	env.LoadEnv()
+
 	var db database.DB
 	db.Init()
 
