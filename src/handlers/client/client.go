@@ -6,16 +6,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Routes(r *gin.Engine) {
-	client := r.Group("client")
-	client.GET("/", GetHomePage)
-	client.GET("/home", GetHomePage)
-	client.GET("/restaurants", GetAllRestaurants)
-	client.GET("/restaurants/:id", GetRestaurantById)
-	client.GET("/restaurants/:id/products", GetRestaurantProductsForClient)
-	client.POST("/order", PostClientOrder)
-}
-
 func GetHomePage(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message": "You are at comiditapp homepage🥳🥳",

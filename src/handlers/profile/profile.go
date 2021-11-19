@@ -6,13 +6,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Routes(r *gin.Engine) {
-	profile := r.Group("profile")
-	profile.GET("/profile/orders", GetProfileOrders)
-	profile.GET("/profile/orders/:id", GetProfileOrderById)
-	profile.PUT("/profile", UpdateProfileData)
-}
-
 func GetProfileOrders(c *gin.Context) {
 	name := c.Param("id")
 	// Logica
