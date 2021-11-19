@@ -2,34 +2,23 @@ package main
 
 import (
 	"log"
-	"net/http"
 	"os"
-
-	"github.com/gin-gonic/gin"
+  "github.com/gin-gonic/gin"
+	auth "comiditapp/api/src/controllers/auth"
+	client "comiditapp/api/src/controllers/client"
+	profile "comiditapp/api/src/controllers/profile"
+	restaurant "comiditapp/api/src/controllers/restaurant"
 )
 
 func main() {
 	r := gin.Default()
-	// All the controllers
 
-	// Common behaviour
-	r.POST("/auth/signup", PostSignUp)
-	r.POST("/auth/signin", PostSignIn)
-	r.GET("/", GetHomePage)
-	r.GET("/restaurants", GetAllRestaurants)
-	r.GET("/restaurants/:id", GetRestaurantById)
-	r.GET("/restaurants/:id/products", GetRestaurantProductsForClient)
-	r.POST("/restaurants/:id/orders", PostClientOrder)
-	r.GET("/profile/orders", GetProfileOrders)
-	r.GET("/profile/orders/:id", GetProfileOrderById)
-	r.PUT("/profile", UpdateProfileData)
+	auth.Routes(r)
+	profile.Routes(r)
+	client.Routes(r)
+	restaurant.Routes(r)
 
-	// Only clients with restaurant role
-	r.GET("/orders", GetRestaurantOrders)
-	r.PUT("/orders/:id", ModifyRestaurantOrder)
-	r.GET("/products", GetRestaurantProductsForRestaurant)
-	r.POST("/products", PostRestaurantProduct)
-	r.PUT("/products/:id", UpdateRestaurantProductById)
+	r.Run()
 
 	// Server listening on port 3000
 	if err := r.Run(os.Getenv("PORT")); err != nil {
@@ -37,57 +26,3 @@ func main() {
 	}
 }
 
-func GetHomePage(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "You are at comiditapp homepage🥳🥳",
-	})
-}
-
-func GetAllRestaurants(c *gin.Context) {
-	var restaurants []string
-	c.JSON(200, gin.H{
-		"restaurants": restaurants,
-	})
-}
-
-func GetRestaurantById(c *gin.Context) {
-	name := c.Param("id")
-	// Logica para buscar el restaurante en la bbdd y devolver sus datos
-	// con el modelo de respuesta que definamos
-	// ...
-	message := "restaurant" + name + "was found"
-	c.String(http.StatusOK, message)
-}
-
-func GetRestaurantProductsForClient(c *gin.Context) {
-	name := c.Param("id")
-	// Logica para traer todos los productos de un restaurante de la bbdd
-	// y devolverlos con el modelo definido para ellos
-	// ...
-	message := "restaurant" + name + "was found"
-	c.String(http.StatusOK, message)
-}
-
-func GetProfileOrders(c *gin.Context) {
-	name := c.Param("id")
-	// Logica
-	message := "all good" + name
-	c.String(http.StatusOK, message)
-}
-
-func GetProfileOrderById(c *gin.Context) {
-	name := c.Param("id")
-	// Logica
-	message := "all good" + name
-	c.String(http.StatusOK, message)
-}
-
-func GetRestaurantOrders(c *gin.Context)                {}
-func ModifyRestaurantOrder(c *gin.Context)              {}
-func PostSignUp(c *gin.Context)                         {}
-func PostSignIn(c *gin.Context)                         {}
-func PostClientOrder(c *gin.Context)                    {}
-func UpdateProfileData(c *gin.Context)                  {}
-func GetRestaurantProductsForRestaurant(c *gin.Context) {}
-func PostRestaurantProduct(c *gin.Context)              {}
-func UpdateRestaurantProductById(c *gin.Context)        {}
