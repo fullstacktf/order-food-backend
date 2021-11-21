@@ -9,5 +9,5 @@ type User struct {
 	HashedPassword string     `json:"hashedPassword"`
 	Phone          int        `json:"phone"`
 	Address        []Address  `json:"address"`
-	Menu           []Product  `json:"menu"` `json:",omitempty"`
+	Menu           []Product  `json:"menu,omitempty"`
 }
