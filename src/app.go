@@ -5,7 +5,6 @@ import (
 	"comiditapp/api/src/controllers/client"
 	"comiditapp/api/src/controllers/profile"
 	"comiditapp/api/src/controllers/restaurant"
-	"comiditapp/api/src/database"
 	"comiditapp/api/src/env"
 	"log"
 
@@ -13,10 +12,7 @@ import (
 )
 
 func main() {
-	env.LoadEnv()
-
-	var db database.DB
-	db.Init()
+	//db := database.GetDB()
 
 	r := gin.Default()
 

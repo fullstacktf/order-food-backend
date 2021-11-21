@@ -18,6 +18,7 @@ type DB struct {
 }
 
 func (db *DB) Init() {
+	env.LoadEnv()
 	db.Client = createClient()
 	db.Collections = getAllCollections(db.Client)
 }
@@ -44,4 +45,11 @@ func getAllCollections(client *mongo.Client) map[string]*mongo.Collection {
 
 func getCollection(client *mongo.Client, collectionName string) *mongo.Collection {
 	return client.Database(env.DB_NAME).Collection(collectionName)
+}
+
+func GetDB() DB {
+	env.LoadEnv()
+	var db DB
+	db.Init()
+	return db
 }

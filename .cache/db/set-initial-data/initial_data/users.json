@@ -1,0 +1,24 @@
+[
+  {
+    "Role": "client",
+    "Name": "Nombre Cliente 1",
+    "Email": "email@cliente1.com",
+    "Password": "hashedPasswordClient1",
+    "Phone": 123456789,
+    "Orders": {
+      "Current": [
+        "123",
+        "456",
+        "789"
+      ],
+      "History": [
+        "12",
+        "34",
+        "56"
+      ]
+    },
+    "Address": [
+      "123"
+    ]
+  }
+]
