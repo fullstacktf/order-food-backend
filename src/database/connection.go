@@ -5,6 +5,7 @@ import (
 	"context"
 	"log"
 	"os"
+	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -21,6 +22,12 @@ func (db *DB) Init() {
 	env.LoadEnv()
 	db.Client = createClient()
 	db.Collections = getAllCollections(db.Client)
+}
+
+func (db *DB) DropDB() {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	db.Client.Database(env.DB_NAME).Drop(ctx)
 }
 
 func createClient() *mongo.Client {

@@ -1,0 +1,47 @@
+[
+  {
+    "Role": "client",
+    "Name": "Nombre Cliente 1",
+    "Email": "email@cliente1.com",
+    "Password": "hashedPasswordClient1",
+    "Phone": 123456789,
+    "Address": [
+      {
+        "Street": "calle cliente 1",
+        "ZipCode": 11111,
+        "Country": "país cliente 1",
+        "City": "ciudad cliente 1"
+      }
+    ]
+  },
+  {
+    "Role": "client",
+    "Name": "Nombre Cliente 2",
+    "Email": "email@cliente2.com",
+    "Password": "hashedPasswordClient2",
+    "Phone": 222222222,
+    "Address": [
+      {
+        "Street": "calle cliente 2",
+        "ZipCode": 22222,
+        "Country": "país cliente 2",
+        "City": "ciudad cliente 2"
+      }
+    ]
+  },
+  {
+    "Role": "client",
+    "Name": "Nombre Cliente 3",
+    "Email": "email@cliente3.com",
+    "Password": "hashedPasswordClient3",
+    "Phone": 333333333,
+    "Address": [
+      {
+        "Street": "calle cliente 3",
+        "ZipCode": 33333,
+        "Country": "país cliente 3",
+        "City": "ciudad cliente 3"
+      }
+    ]
+  }
+]
