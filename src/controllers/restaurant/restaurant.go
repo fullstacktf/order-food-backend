@@ -1,7 +1,7 @@
 package restaurant
 
 import (
-	handler "comiditapp/api/src/handlers/restaurant"
+	handler "comiditapp/api/handlers/restaurant"
 
 	"github.com/gin-gonic/gin"
 )

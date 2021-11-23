@@ -1,7 +1,7 @@
 package database
 
 import (
-	"comiditapp/api/src/env"
+	"comiditapp/api/env"
 	"context"
 	"log"
 	"os"
@@ -23,6 +23,7 @@ func (db *DB) Init() {
 }
 
 func createClient() *mongo.Client {
+	println(os.Getenv("MONGODB_URI"))
 	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(os.Getenv("MONGODB_URI")))
 	if err != nil {
 		log.Fatal(err)

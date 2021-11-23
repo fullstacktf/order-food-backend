@@ -1,0 +1,27 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        "GO_VERSION": ${GO_VERSION}
+    volumes:
+      - ./src/:/app
+      - .env/:/app/.env
+  debug-app:
+    container_name: ${CONTAINER_NAME}
+    build:
+      context: .
+      dockerfile: Dockerfile.debug
+      args:
+        "GO_VERSION": ${GO_VERSION}
+    ports:
+      - "${PORT}:${PORT}"
+    security_opt:
+      - "seccomp:unconfined"
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./src/:/app
+    command: dlv debug --headless --listen=:${PORT} --api-version=2 --log ${MAIN_FILE}

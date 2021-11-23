@@ -4,9 +4,9 @@ mongo-stop:
 	@echo "🍉 Stopping mongo database container..."
 	@./.scripts/stop_mongo.sh
 
-server-start:  
+server-start: 
 	@echo "🍔 Starting server..."
-	@./.scripts/run_server.sh
+	@docker-compose up
 
 mongo-start:  mongo-stop
 	@echo "🥑 Starting mongo database..."

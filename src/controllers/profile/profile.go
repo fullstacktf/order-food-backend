@@ -1,7 +1,7 @@
 package profile
 
 import (
-	handler "comiditapp/api/src/handlers/profile"
+	handler "comiditapp/api/handlers/profile"
 
 	"github.com/gin-gonic/gin"
 )

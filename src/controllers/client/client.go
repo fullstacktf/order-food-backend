@@ -1,7 +1,7 @@
 package client
 
 import (
-	handler "comiditapp/api/src/handlers/client"
+	handler "comiditapp/api/handlers/client"
 
 	"github.com/gin-gonic/gin"
 )

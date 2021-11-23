@@ -1,7 +1,7 @@
 package auth
 
 import (
-	handler "comiditapp/api/src/handlers/auth"
+	handler "comiditapp/api/handlers/auth"
 
 	"github.com/gin-gonic/gin"
 )
