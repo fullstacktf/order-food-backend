@@ -2,6 +2,7 @@ package main // si le pongo otro nombre de paquete peta al hacer go run. No lo e
 
 import (
 	"comiditapp/api/src/database"
+	"comiditapp/api/src/env"
 	"comiditapp/api/src/models"
 	"context"
 	"encoding/json"
@@ -11,24 +12,27 @@ import (
 	"time"
 )
 
+const dataDirectory = "./.cache/db/set-initial-data/initial-data"
+
 func main() {
 
+	env.LoadEnv()
 	db := database.GetDB()
 	db.DropDB()
 
 	// Lectura de usuarios cliente
 	var clients []models.User
-	byteValue := readData("./initial_data/clients.json")
+	byteValue := readData(dataDirectory + "/clients.json")
 	json.Unmarshal(byteValue, &clients)
 
 	// Lectura de usuarios restaurante
 	var restaurants []models.User
-	byteValue = readData("./initial_data/restaurants.json")
+	byteValue = readData(dataDirectory + "/restaurants.json")
 	json.Unmarshal(byteValue, &restaurants)
 
 	// Lectura de orders
 	var orders []models.Order
-	byteValue = readData("./initial_data/orders.json")
+	byteValue = readData(dataDirectory + "/orders.json")
 	json.Unmarshal(byteValue, &orders)
 
 	// INSERCIONES EN LA BBDD

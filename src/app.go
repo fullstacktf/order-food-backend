@@ -12,6 +12,7 @@ import (
 )
 
 func main() {
+	env.LoadEnv()
 	//db := database.GetDB()
 
 	r := gin.Default()
