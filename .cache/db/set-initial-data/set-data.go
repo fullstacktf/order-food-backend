@@ -8,8 +8,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"time"
+
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 const dataDirectory = "./.cache/db/set-initial-data/initial-data"
@@ -17,6 +20,7 @@ const dataDirectory = "./.cache/db/set-initial-data/initial-data"
 func main() {
 
 	env.LoadEnv()
+
 	db := database.GetDB()
 	db.DropDB()
 
@@ -25,43 +29,44 @@ func main() {
 	byteValue := readData(dataDirectory + "/clients.json")
 	json.Unmarshal(byteValue, &clients)
 
+	var interfaceClients []interface{} = make([]interface{}, len(clients))
+	for index, client := range clients {
+		interfaceClients[index] = client
+	}
+
 	// Lectura de usuarios restaurante
 	var restaurants []models.User
 	byteValue = readData(dataDirectory + "/restaurants.json")
 	json.Unmarshal(byteValue, &restaurants)
+
+	var interfaceRestaurants []interface{} = make([]interface{}, len(restaurants))
+	for index, restaurant := range restaurants {
+		interfaceRestaurants[index] = restaurant
+	}
 
 	// Lectura de orders
 	var orders []models.Order
 	byteValue = readData(dataDirectory + "/orders.json")
 	json.Unmarshal(byteValue, &orders)
 
+	var interfaceOrders []interface{} = make([]interface{}, len(orders))
+	for index, order := range orders {
+		interfaceOrders[index] = order
+	}
+
 	// INSERCIONES EN LA BBDD
 
+	insertMany(interfaceClients, db.Collections["user"])
+	insertMany(interfaceRestaurants, db.Collections["user"])
+	insertMany(interfaceOrders, db.Collections["order"])
+}
+
+func insertMany(interfaceSlice []interface{}, collection *mongo.Collection) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
-
-	// Inserción de clients
-	for i := 0; i < len(clients); i++ {
-		_, err := db.Collections["user"].InsertOne(ctx, clients[i])
-		if err != nil {
-			fmt.Println(err)
-		}
-	}
-
-	// Inserción de restaurantes
-	for i := 0; i < len(restaurants); i++ {
-		_, err := db.Collections["user"].InsertOne(ctx, restaurants[i])
-		if err != nil {
-			fmt.Println(err)
-		}
-	}
-
-	// Inserción de orders
-	for i := 0; i < len(orders); i++ {
-		_, err := db.Collections["order"].InsertOne(ctx, orders[i])
-		if err != nil {
-			fmt.Println(err)
-		}
+	_, err := collection.InsertMany(ctx, interfaceSlice)
+	if err != nil {
+		log.Fatal(err)
 	}
 }
 
