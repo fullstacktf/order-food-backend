@@ -27,7 +27,7 @@ services:
     command: dlv debug --headless --listen=:${PORT} --api-version=2 --log ${MAIN_FILE}
   mongo:
     container_name: ${MONGO_CONTAINER_NAME}
-    image: mongo:5.0.3 
+    image: mongo:5.0.3
     ports:
       - 27017:27017
     environment:
@@ -35,4 +35,3 @@ services:
     restart: always
     volumes:
       - ./.cache/db/data:/data/db
-    

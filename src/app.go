@@ -28,7 +28,7 @@ func main() {
 	r.Run()
 
 	// Server listening on port 3000
-	if err := r.Run(env.PORT); err != nil {
+	if err := r.Run(":" + env.PORT); err != nil {
 		log.Fatal("Error running the server ❌: ", err.Error())
 	}
 	println("yeka❌❌❌❌❌❌❌❌")
