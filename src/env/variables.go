@@ -16,10 +16,12 @@ func LoadEnv() {
 	err := godotenv.Load("./.env")
 
 	if err != nil {
-		log.Fatalf("Error loading .env file")
+		log.Fatal("Error loading .env file ❌: ", err)
 	}
 
 	MONGODB_URI = os.Getenv("MONGODB_URI")
 	DB_NAME = os.Getenv("DB_NAME")
 	PORT = os.Getenv("PORT")
+
+	println("Loaded environment variables succesfully ✅")
 }

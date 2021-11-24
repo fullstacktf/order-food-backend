@@ -26,13 +26,10 @@ func main() {
 	restaurant.Routes(r)
 
 	r.Run()
-	println("hola")
-	println("hola")
-	println("hola")
-	println("hola")
-	println("hola")
+
 	// Server listening on port 3000
 	if err := r.Run(env.PORT); err != nil {
-		log.Fatal(err.Error())
+		log.Fatal("Error running the server ❌: ", err.Error())
 	}
+	println("yeka❌❌❌❌❌❌❌❌")
 }

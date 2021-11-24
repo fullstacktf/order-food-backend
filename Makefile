@@ -1,15 +1,15 @@
 .DEFAULT_GOAL := build
 
-mongo-stop: 
-	@echo "🍉 Stopping mongo database container..."
-	@./.scripts/stop_mongo.sh
+server-debug: mongo
+	@echo "🍉 Starting server with debug mode..."
+	@docker-compose up app debug-app
 
-server-start: 
-	@echo "🍔 Starting server..."
-	@docker-compose up
+server: mongo
+	@echo "🍔 Starting server without debug mode..."
+	@docker-compose up app
 
-mongo-start:  mongo-stop
-	@echo "🥑 Starting mongo database..."
-	@./.scripts/build_mongo.sh
+mongo:  
+	@echo "🥑 Starting mongo database in detached mode..."
+	@docker-compose up -d mongo
 
-build: mongo-start server-start
+build: mongo server-debug
