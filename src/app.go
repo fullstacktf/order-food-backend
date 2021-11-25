@@ -16,6 +16,7 @@ func main() {
 	env.LoadEnv()
 
 	//db := database.GetDB()
+	//db.Init()
 	//database.SetInitialData(db)
 
 	r := gin.Default()
