@@ -1,6 +1,7 @@
 .idea
 node_modules
-.cache
+.cache/db/data
+.cache/db/set-initial-data/initial-data
 *.env
 app
 src/tmp

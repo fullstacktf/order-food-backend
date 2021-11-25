@@ -7,9 +7,9 @@ type Order struct {
 	RestaurantId string            `json:"restaurantId"`
 	ClientId     string            `json:"clientId"`
 	Status       enums.OrderStatus `json:"status"`
-	TotalPrice   int               `json:"totalPrice"`
+	TotalPrice   float64           `json:"totalPrice"`
 	Products     []struct {
 		ProductId string `json:"productId"`
-		Quantity  string `json:"quantity"`
+		Quantity  int    `json:"quantity"`
 	}
 }

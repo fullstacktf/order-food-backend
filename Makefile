@@ -8,11 +8,11 @@ server: mongo
 	@echo "🍔 Starting server without debug mode..."
 	@docker-compose up app
 
-mongo:  
+mongo:
 	@echo "🥑 Starting mongo database in detached mode..."
 	@docker-compose up -d mongo
 
-stop: 
+stop:
 	@echo "❌ Bringing down the container..."
 	@docker-compose down
 
