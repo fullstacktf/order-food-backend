@@ -1,4 +1,4 @@
-package main // si le pongo otro nombre de paquete peta al hacer go run. No lo entiendo :(
+package main
 
 import (
 	"comiditapp/api/src/database"
