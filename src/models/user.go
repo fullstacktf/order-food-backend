@@ -1,6 +1,6 @@
 package models
 
-import "comiditapp/api/src/enums"
+import "comiditapp/api/enums"
 
 type User struct {
 	Role           enums.Role `json:"role"`

@@ -1,7 +1,7 @@
 package database
 
 import (
-	"comiditapp/api/src/env"
+	"comiditapp/api/env"
 	"context"
 	"log"
 	"os"
@@ -20,7 +20,10 @@ type DB struct {
 
 func (db *DB) Init() {
 	db.Client = createClient()
+	println("Client initialized succesfully ✅")
+
 	db.Collections = getAllCollections(db.Client)
+	println("Collections initialized succesfully ✅")
 }
 
 func (db *DB) DropDB() {
@@ -30,22 +33,33 @@ func (db *DB) DropDB() {
 }
 
 func createClient() *mongo.Client {
+
 	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(os.Getenv("MONGODB_URI")))
+
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Error when connecting to database ❌: ", err)
 	}
+
+	println("Connected to the database ✅")
+
 	err = client.Ping(context.TODO(), nil)
+
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Error when trying to ping database ❌: ", err)
 	}
+
+	println("Ping done succesfully ✅")
 	return client
 }
 
 func getAllCollections(client *mongo.Client) map[string]*mongo.Collection {
+
 	collections := make(map[string]*mongo.Collection)
+
 	for _, collectionName := range collection_names {
 		collections[collectionName] = getCollection(client, collectionName)
 	}
+
 	return collections
 }
 
