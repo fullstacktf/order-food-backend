@@ -16,4 +16,4 @@ stop:
 	@echo "❌ Bringing down the container..."
 	@docker-compose down
 
-build: mongo server-debug
+build: mongo server

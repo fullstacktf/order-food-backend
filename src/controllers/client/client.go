@@ -7,11 +7,10 @@ import (
 )
 
 func Routes(r *gin.Engine) {
-	client := r.Group("client")
-	client.GET("/", handler.GetHomePage)
-	client.GET("/home", handler.GetHomePage)
-	client.GET("/restaurants", handler.GetAllRestaurants)
-	client.GET("/restaurants/:id", handler.GetRestaurantById)
-	client.GET("/restaurants/:id/products", handler.GetRestaurantProductsForClient)
-	client.POST("/order", handler.PostClientOrder)
+	// client := r.Group("client")
+	r.GET("/", handler.GetHomePage)
+	r.GET("/restaurants", handler.GetAllRestaurants)
+	r.GET("/restaurants/:id", handler.GetRestaurantById)
+	r.GET("/restaurants/:id/products", handler.GetRestaurantProductsForClient)
+	r.POST("/order", handler.PostClientOrder)
 }

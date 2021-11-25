@@ -7,8 +7,8 @@ import (
 )
 
 func Routes(r *gin.Engine) {
-	profile := r.Group("profile")
-	profile.GET("/profile/orders", handler.GetProfileOrders)
-	profile.GET("/profile/orders/:id", handler.GetProfileOrderById)
-	profile.PUT("/profile", handler.UpdateProfileData)
+	// profile := r.Group("profile")
+	r.GET("/profile/orders", handler.GetProfileOrders)
+	r.GET("/profile/orders/:id", handler.GetProfileOrderById)
+	r.PUT("/profile", handler.UpdateProfileData)
 }

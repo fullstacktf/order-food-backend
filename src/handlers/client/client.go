@@ -13,7 +13,7 @@ func GetHomePage(c *gin.Context) {
 }
 
 func GetAllRestaurants(c *gin.Context) {
-	var restaurants []string
+	var restaurants []string = []string{}
 	c.JSON(200, gin.H{
 		"restaurants": restaurants,
 	})

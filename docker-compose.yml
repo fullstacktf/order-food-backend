@@ -6,25 +6,11 @@ services:
       dockerfile: Dockerfile
       args:
         "GO_VERSION": ${GO_VERSION}
+    ports:
+      - "${PORT}:${PORT}"
     volumes:
       - ./src/:/app
       - .env/:/app/.env
-  debug-app:
-    container_name: ${CONTAINER_NAME}
-    build:
-      context: .
-      dockerfile: Dockerfile.debug
-      args:
-        "GO_VERSION": ${GO_VERSION}
-    ports:
-      - "${PORT}:${PORT}"
-    security_opt:
-      - "seccomp:unconfined"
-    tty: true
-    stdin_open: true
-    volumes:
-      - ./src/:/app
-    command: dlv debug --headless --listen=:${PORT} --api-version=2 --log ${MAIN_FILE}
   mongo:
     container_name: ${MONGO_CONTAINER_NAME}
     image: mongo:5.0.3
