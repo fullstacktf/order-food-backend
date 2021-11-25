@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        "GO_VERSION": ${GO_VERSION}
+    ports:
+      - "${PORT}:${PORT}"
+    volumes:
+      - ./src/:/app
+      - .env/:/app/.env
+  mongo:
+    container_name: ${MONGO_CONTAINER_NAME}
+    image: mongo:5.0.3
+    ports:
+      - 27017:27017
+    environment:
+      - name=value
+    restart: always
+    volumes:
+      - ./.cache/db/data:/data/db
