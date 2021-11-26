@@ -8,7 +8,7 @@ import (
 )
 
 type OrdersRepository interface {
-	createOrder(ctx context.Context, user models.User)      // Endpoint -> /restaurants/:id/orders
-	findOrderById(ctx context.Context, user models.User)    // Endpoint -> /profile/orders/:id
-	UpdateOrder(ctx context.Context, id primitive.ObjectID) // Endpoint -> /orders/:id
+	createOrder(ctx context.Context, order models.Order)      // Endpoint -> /restaurants/:id/orders
+	findOrderById(ctx context.Context, id primitive.ObjectID) // Endpoint -> /profile/orders/:id
+	UpdateOrder(ctx context.Context, order models.Order)      // Endpoint -> /orders/:id
 }
