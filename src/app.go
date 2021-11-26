@@ -1,10 +1,12 @@
 package main
 
 import (
-	"comiditapp/api/controllers/auth"
-	"comiditapp/api/controllers/client"
-	"comiditapp/api/controllers/profile"
-	"comiditapp/api/controllers/restaurant"
+	"comiditapp/api/controllers/any_role/auth"
+	"comiditapp/api/controllers/any_role/home"
+	"comiditapp/api/controllers/any_role/profile"
+	"comiditapp/api/controllers/any_role/restaurants"
+	"comiditapp/api/controllers/restaurant_role/orders"
+	"comiditapp/api/controllers/restaurant_role/products"
 	"comiditapp/api/env"
 	"log"
 
@@ -21,10 +23,15 @@ func main() {
 
 	r := gin.Default()
 
+	// any role users
+	home.Routes(r)
 	auth.Routes(r)
+	restaurants.Routes(r)
 	profile.Routes(r)
-	client.Routes(r)
-	restaurant.Routes(r)
+
+	// only restaurant role users
+	orders.Routes(r)
+	products.Routes(r)
 
 	r.Run()
 
