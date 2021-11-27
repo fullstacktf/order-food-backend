@@ -8,12 +8,12 @@ import (
 )
 
 func Routes(r *gin.Engine) {
-	var ordersRepository repository.OrdersRepository
+	var ordersRepository repository.MockedOrdersRepository
 
 	profileGroup := r.Group("/profile")
 	{
 		profileGroup.PUT("", profile_handler.UpdateProfile)
-		profileGroup.GET("/orders", profile_handler.GetOrders)
+		profileGroup.GET("/orders", profile_handler.GetOrders(ordersRepository))
 		profileGroup.GET("/orders/:id", profile_handler.GetOrderById(ordersRepository))
 	}
 }
