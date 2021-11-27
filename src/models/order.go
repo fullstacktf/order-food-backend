@@ -5,10 +5,10 @@ import (
 )
 
 type Order struct {
-	Id           string            `json:"id"`
-	RestaurantId string            `json:"restaurantId"`
-	ClientId     string            `json:"clientId"`
-	Status       enums.OrderStatus `json:"status"`
-	TotalPrice   float64           `json:"totalPrice"`
-	Products     []ProductInfo
+	Id           string            `json:"id" validate:"required"`
+	RestaurantId string            `json:"restaurantId" validate:"required"`
+	ClientId     string            `json:"clientId" validate:"required"`
+	Status       enums.OrderStatus `json:"status"  validate:"required"`
+	TotalPrice   float64           `json:"totalPrice" validate:"required"`
+	Products     []ProductInfo     `json:"products" validate:"required"`
 }
