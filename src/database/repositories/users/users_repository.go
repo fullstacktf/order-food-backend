@@ -1,4 +1,4 @@
-package users_repository
+package repository
 
 import (
 	"comiditapp/api/models"

@@ -1,14 +1,18 @@
-package orders_repository
+package repository
 
 import (
 	"comiditapp/api/models"
-	"context"
 
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	"github.com/gin-gonic/gin"
 )
 
 type OrdersRepository interface {
-	createOrder(ctx context.Context, order models.Order)      // Endpoint -> /restaurants/:id/orders
-	findOrderById(ctx context.Context, id primitive.ObjectID) // Endpoint -> /profile/orders/:id
-	UpdateOrder(ctx context.Context, order models.Order)      // Endpoint -> /orders/:id
+	// any_role methods
+	FindOrders(context *gin.Context) []models.Order // Endpoint -> /profile/orders
+	GetOrderById(context *gin.Context) models.Order // Endpoint -> /profile/orders/:id
+	CreateOrder(context *gin.Context) models.Order  // Endpoint -> /restaurants/:id/orders
+
+	// restaurant_role methods
+	UpdateClientOrder(context *gin.Context) models.Order  // Endpoint -> /orders/:id
+	FindClientOrders(context *gin.Context) []models.Order // Endpoint -> /orders
 }
