@@ -1,11 +1,14 @@
 package order_handler
 
 import (
+	repository "comiditapp/api/database/repositories/orders"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-func UpdateOrder(c *gin.Context) {
-	c.String(http.StatusOK, "UpdateOrder handler")
+func UpdateClientOrder(repository repository.MockedOrdersRepository) gin.HandlerFunc {
+	return func(context *gin.Context) {
+		context.IndentedJSON(http.StatusOK, repository.UpdateClientOrder(context))
+	}
 }
