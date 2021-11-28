@@ -14,5 +14,5 @@ type User struct {
 	HashedPassword string             `json:"hashedPassword" bson:"hashedPassword" validate:"required"`
 	Phone          int                `json:"phone" bson:"phone" validate:"required"`
 	Address        []Address          `json:"address" bson:"address" validate:"required"`
-	Menu           []Product          `json:"menu,omitempty" bson:"menu,omitempty" validate:"required"`
+	Menu           []Product          `json:"menu,omitempty" bson:"menu,omitempty"`
 }
