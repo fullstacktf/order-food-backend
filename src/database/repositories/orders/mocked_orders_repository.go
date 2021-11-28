@@ -9,13 +9,18 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"github.com/stretchr/testify/mock"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
+var id1 = primitive.NewObjectID()
+var id2 = primitive.NewObjectID()
+var id3 = primitive.NewObjectID()
+var id4 = primitive.NewObjectID()
 var orders []models.Order = []models.Order{
-	{Id: "1", RestaurantId: "1", ClientId: "1", Status: enums.Ordered, TotalPrice: 30.30, Products: []models.ProductInfo{{ProductId: "1", Quantity: 1}}},
-	{Id: "2", RestaurantId: "1", ClientId: "2", Status: enums.Preparing, TotalPrice: 45.30, Products: []models.ProductInfo{{ProductId: "3", Quantity: 2}, {ProductId: "1", Quantity: 2}}},
-	{Id: "3", RestaurantId: "2", ClientId: "2", Status: enums.Preparing, TotalPrice: 45.30, Products: []models.ProductInfo{{ProductId: "3", Quantity: 2}, {ProductId: "1", Quantity: 2}}},
-	{Id: "4", RestaurantId: "1", ClientId: "2", Status: enums.Preparing, TotalPrice: 45.30, Products: []models.ProductInfo{{ProductId: "3", Quantity: 2}, {ProductId: "1", Quantity: 2}}},
+	{Id: id1, RestaurantId: primitive.NewObjectID(), ClientId: primitive.NewObjectID(), Status: enums.Ordered, TotalPrice: 30.30, Products: []models.ProductInfo{{ProductId: primitive.NewObjectID(), Quantity: 1}}},
+	{Id: id2, RestaurantId: primitive.NewObjectID(), ClientId: primitive.NewObjectID(), Status: enums.Preparing, TotalPrice: 45.30, Products: []models.ProductInfo{{ProductId: primitive.NewObjectID(), Quantity: 2}, {ProductId: primitive.NewObjectID(), Quantity: 2}}},
+	{Id: id3, RestaurantId: primitive.NewObjectID(), ClientId: primitive.NewObjectID(), Status: enums.Preparing, TotalPrice: 45.30, Products: []models.ProductInfo{{ProductId: primitive.NewObjectID(), Quantity: 2}, {ProductId: primitive.NewObjectID(), Quantity: 2}}},
+	{Id: id4, RestaurantId: primitive.NewObjectID(), ClientId: primitive.NewObjectID(), Status: enums.Preparing, TotalPrice: 45.30, Products: []models.ProductInfo{{ProductId: primitive.NewObjectID(), Quantity: 2}, {ProductId: primitive.NewObjectID(), Quantity: 2}}},
 }
 
 type MockedOrdersRepository struct {
@@ -36,12 +41,14 @@ func (r *MockedOrdersRepository) GetOrders(context *gin.Context) []models.Order 
 func (r *MockedOrdersRepository) GetOrderById(context *gin.Context) models.Order {
 	result := []models.Order{}
 
-	orderId := context.Param("id")
+	orderId, err := primitive.ObjectIDFromHex(context.Param("id"))
 
-	// Version corta, parece que no encuentra elementos de la primera posicion
-	// found := sort.Search(len(orders), func(i int) bool {
-	// 	return orders[i].Id == orderId
-	// })
+	if err != nil {
+		errorMsg := "Bad Request, " + err.Error()
+
+		http.Error(context.Writer, errorMsg, http.StatusBadRequest)
+		panic(err)
+	}
 
 	for _, value := range orders {
 		if value.Id == orderId {
@@ -49,11 +56,13 @@ func (r *MockedOrdersRepository) GetOrderById(context *gin.Context) models.Order
 			break
 		}
 	}
+
 	if len(result) == 0 {
-		errorMsg := "Cannot found order with ID " + orderId
+		errorMsg := "Cannot found order with ID " + orderId.Hex()
 		http.Error(context.Writer, errorMsg, http.StatusNotFound)
 		panic(errorMsg)
 	}
+
 	context.IndentedJSON(http.StatusOK, result)
 
 	args := r.Called(context)
@@ -77,7 +86,7 @@ func (r *MockedOrdersRepository) CreateOrder(context *gin.Context) models.Order 
 
 	for _, value := range orders {
 		if value.Id == newOrder.Id {
-			errorMsg := "Cannot create order, ID " + value.Id + " already exists"
+			errorMsg := "Cannot create order, ID " + value.Id.Hex() + " already exists"
 			http.Error(context.Writer, errorMsg, http.StatusBadRequest)
 			panic(errorMsg)
 		}
@@ -93,9 +102,17 @@ func (r *MockedOrdersRepository) CreateOrder(context *gin.Context) models.Order 
 // restaurant_role methods
 func (r *MockedOrdersRepository) UpdateClientOrder(context *gin.Context) models.Order {
 
+	// Controlar que SOLO puede modificar el campo de status, si intenta cambiar otro tendremos que ignorarlo
 	// Controlar que tiene rol de restaurante
 
-	orderId := context.Param("id")
+	orderId, err := primitive.ObjectIDFromHex(context.Param("id"))
+
+	if err != nil {
+		errorMsg := "Bad Request, " + err.Error()
+
+		http.Error(context.Writer, errorMsg, http.StatusBadRequest)
+		panic(err)
+	}
 
 	var validate *validator.Validate = validator.New()
 	var newOrder models.Order
@@ -108,19 +125,19 @@ func (r *MockedOrdersRepository) UpdateClientOrder(context *gin.Context) models.
 	}
 
 	if foundOrderIndex == -1 {
-		errorMsg := "Cannot found order with ID " + orderId
+		errorMsg := "Cannot found order with ID " + orderId.Hex()
 		http.Error(context.Writer, errorMsg, http.StatusNotFound)
 		panic(errorMsg)
 	}
 
 	json.NewDecoder(context.Request.Body).Decode(&newOrder)
 
-	err := validate.Struct(newOrder)
-	if err != nil {
-		errorMsg := "Cannot update order, required fields not provided...\n" + err.(validator.ValidationErrors).Error()
+	valErr := validate.Struct(newOrder)
+	if valErr != nil {
+		errorMsg := "Cannot update order, required fields not provided...\n" + valErr.(validator.ValidationErrors).Error()
 
 		http.Error(context.Writer, errorMsg, http.StatusBadRequest)
-		panic(err)
+		panic(valErr)
 	}
 
 	orders[foundOrderIndex] = newOrder
@@ -135,7 +152,10 @@ func (r *MockedOrdersRepository) GetClientsOrders(context *gin.Context) []models
 	// Controlar que tiene rol de restaurante
 
 	// Este id deberiamos sacarlos de la sesion del usuario, comprobando que es un restaurante y sacando su id
-	restaurantId := "1"
+
+	// En este caso nunca va a encontrar el restaurante precisamente por lo anterior que digo,
+	// pero una vez podamos enganchar el id, esto funcionará
+	restaurantId := primitive.NewObjectID()
 
 	result := []models.Order{}
 
@@ -144,11 +164,13 @@ func (r *MockedOrdersRepository) GetClientsOrders(context *gin.Context) []models
 			result = append(result, value)
 		}
 	}
+
 	if len(result) == 0 {
-		errorMsg := "Cannot found orders for restaurant with ID " + restaurantId
+		errorMsg := "Cannot found orders for restaurant with ID " + restaurantId.Hex()
 		http.Error(context.Writer, errorMsg, http.StatusNotFound)
 		panic(errorMsg)
 	}
+
 	context.IndentedJSON(http.StatusOK, result)
 
 	args := r.Called(context)
