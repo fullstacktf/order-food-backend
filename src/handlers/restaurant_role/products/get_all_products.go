@@ -1,11 +1,14 @@
 package product_handler
 
 import (
+	repository "comiditapp/api/database/repositories/users"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-func GetAllProducts(c *gin.Context) {
-	c.String(http.StatusOK, "GetAll handler")
+func FindProducts(repository repository.MockedUsersRepository) gin.HandlerFunc {
+	return func(context *gin.Context) {
+		context.IndentedJSON(http.StatusOK, repository.FindProducts(context))
+	}
 }
