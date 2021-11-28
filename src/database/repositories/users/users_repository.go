@@ -8,6 +8,8 @@ type UsersRepository interface {
 	SignInUser(context *gin.Context)            // Endpoint -> /auth/signin
 	FindRestaurants(context *gin.Context)       // Endpoint -> /restaurants
 	GetRestaurantById(context *gin.Context)     // Endpoint -> /restaurants/:id
+	FindClients(context *gin.Context)           // Endpoint -> /clients
+	GetClientById(context *gin.Context)         // Endpoint -> /clients/:id
 	GetRestaurantProducts(context *gin.Context) // Endpoint -> /restaurants/:id/products
 	UpdateProfile(context *gin.Context)         // Endpoint -> /profile
 
