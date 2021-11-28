@@ -2,6 +2,7 @@ package main
 
 import (
 	"comiditapp/api/controllers/any_role/auth"
+	client "comiditapp/api/controllers/any_role/clients"
 	"comiditapp/api/controllers/any_role/home"
 	"comiditapp/api/controllers/any_role/profile"
 	"comiditapp/api/controllers/any_role/restaurants"
@@ -27,6 +28,7 @@ func main() {
 	home.Routes(r)
 	auth.Routes(r)
 	restaurants.Routes(r)
+	client.Routes(r)
 	profile.Routes(r)
 
 	// only restaurant role users
