@@ -15,7 +15,7 @@ func Routes(r *gin.Engine) {
 
 	profileGroup := r.Group("/profile")
 	{
-		profileGroup.PUT("", profile_handler.UpdateProfile(usersRepository))
+		profileGroup.PUT("/:id", profile_handler.UpdateProfile(usersRepository))
 		profileGroup.GET("/orders", profile_handler.GetOrders(ordersRepository))
 		profileGroup.GET("/orders/:id", profile_handler.GetOrderById(ordersRepository))
 	}

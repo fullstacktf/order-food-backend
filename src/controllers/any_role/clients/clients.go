@@ -10,5 +10,9 @@ import (
 func Routes(r *gin.Engine) {
 	var usersRepository repository.MockedUsersRepository
 
-	r.GET("/clients", client_handler.FindClients(usersRepository))
+	clientsGroup := r.Group("/clients")
+	{
+		clientsGroup.GET("", client_handler.FindClients(usersRepository))
+		clientsGroup.GET("/:id", client_handler.GetClientById(usersRepository))
+	}
 }
