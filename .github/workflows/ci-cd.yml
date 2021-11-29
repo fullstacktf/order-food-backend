@@ -30,7 +30,8 @@ jobs:
         with:
           host: ${{ secrets.DO_HOST }}
           user: ${{ secrets.DO_USER }}
-          pass: ${{ secrets.DO_PASSWORD }}
+          key: ${{ secrets.DO_KEY }}
+          #pass: ${{ secrets.DO_PASSWORD }}
           command: |
             cd /comiditapp-pruebas
             echo 'hello from github actions' >> message.txt
