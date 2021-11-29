@@ -1,29 +1,27 @@
 name: Test & Deploy on Digital Ocean
-on:
-# maybe we should add PR too, as deploy would only be triggered by pushes
-  push:
-    branches: feat/ci-cd # just trying if it works. This should be main branch
+on: [push, pull_request]
 jobs:
-  #test:
-  #  strategy:
-  #    matrix:
-  #      go-version: [1.17.x]
-  #      os: [ubuntu-latest, macos-latest, windows-latest]
-  #  runs-on: ${{ matrix.os }}
-  #  steps:
-  #  - name: Install Go
-  #    uses: actions/setup-go@v2
-  #    with:
-  #      go-version: ${{ matrix.go-version }}
-  #  - name: Checkout code
-  #    uses: actions/checkout@v2
-  #  - name: Test
-  #    run: cd src && go test ./...
+  test:
+    strategy:
+      matrix:
+        go-version: [1.17.x]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - name: Install Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: ${{ matrix.go-version }}
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Test
+      run: cd src && go test ./...
 
   deploy:
-    #needs: test
+    needs: test
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
+    # Deploy only when pushing onto main (or merging PR)
+    if: github.event_name == 'push' && ${{ github.ref == 'refs/heads/main' }}
     steps:
       - name: Deploy to Digital Ocean droplet via SSH action
         uses: fifsky/ssh-action@master
@@ -31,8 +29,7 @@ jobs:
           host: ${{ secrets.DO_HOST }}
           user: ${{ secrets.DO_USER }}
           key: ${{ secrets.DO_KEY }}
-          #pass: ${{ secrets.DO_PASSWORD }}
           command: |
             cd /comiditapp-pruebas
             echo 'hello from github actions' >> message.txt
-          args: "-tt -vvv"
+          args: "-tt"
