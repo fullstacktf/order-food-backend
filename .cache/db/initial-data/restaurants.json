@@ -1,0 +1,72 @@
+[
+  {
+    "Role": "restaurant",
+    "Name": "Cafetería Mortadelo",
+    "Email": "cafeteriamortadelo@hotmail.es",
+    "Password": "HappyChickens",
+    "Phone": 111111111,
+    "Address": [
+      {
+        "Street": "Avenida de los Majuelos 117",
+        "ZipCode": 11111,
+        "Country": "España",
+        "City": "Santa Cruz de Tenerife"
+      }
+    ],
+    "Menu": [
+      {
+        "Id": 1,
+        "Category": "mainCourse",
+        "Name": "Bocadillo Clásico Embutidos",
+        "Price": 1.40
+      },
+      {
+        "Id": 2,
+        "Category": "mainCourse",
+        "Name": "Perrito Especial Mexicano",
+        "Price": 3.00
+      },
+      {
+        "Id": 3,
+        "Category": "appetizer",
+        "Name": "Ensaladilla",
+        "Price": 4.20
+      }
+    ]
+  },
+  {
+    "Role": "restaurant",
+    "Name": "Don Perrito",
+    "Email": "DonPerrito@hotmail.com",
+    "Password": "r,<C:RW(x+2xW}{~",
+    "Phone": 222222222,
+    "Address": [
+      {
+        "Street": "Calle Decano Consular Jesus Ramos González 18",
+        "ZipCode": 22222,
+        "Country": "España",
+        "City": "Santa Cruz de Tenerife"
+      }
+    ],
+    "Menu": [
+      {
+        "Id": 1,
+        "Category": "mainCourse",
+        "Name": "Ensalada Don Perrito",
+        "Price": 4.00
+      },
+      {
+        "Id": 2,
+        "Category": "mainCourse",
+        "Name": "Ensalada Vegetal",
+        "Price": 4.20
+      },
+      {
+        "Id": 3,
+        "Category": "drink",
+        "Name": "Cerveza Lata",
+        "Price": 1.60
+      }
+    ]
+  }
+]

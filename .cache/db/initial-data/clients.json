@@ -1,0 +1,47 @@
+[
+  {
+    "Role": "client",
+    "Name": "Francisco Díaz",
+    "Email": "franDiaz@yahoo.es",
+    "Password": "MichaelHighFives",
+    "Phone": 111111111,
+    "Address": [
+      {
+        "Street": "Calle Roquefort 32",
+        "ZipCode": 11111,
+        "Country": "España",
+        "City": "Las Palmas de Gran Canaria"
+      }
+    ]
+  },
+  {
+    "Role": "client",
+    "Name": "María Fernández",
+    "Email": "mery-mail@hotmail.com",
+    "Password": "BrooklynDisguises",
+    "Phone": 222222222,
+    "Address": [
+      {
+        "Street": "Calle Benito 41",
+        "ZipCode": 22222,
+        "Country": "España",
+        "City": "Córdoba"
+      }
+    ]
+  },
+  {
+    "Role": "client",
+    "Name": "Pablo Padilla",
+    "Email": "pabloski@outlook.com",
+    "Password": "YellowDogs",
+    "Phone": 333333333,
+    "Address": [
+      {
+        "Street": "Calle Orujo 2",
+        "ZipCode": 33333,
+        "Country": "España",
+        "City": "Bilbao"
+      }
+    ]
+  }
+]
