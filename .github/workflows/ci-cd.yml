@@ -1,6 +1,6 @@
 name: Test & Deploy on Digital Ocean
 on:
-# maybe we should add PR too, as deploy would only be triggered by pushes
+#maybe we should add PR too, as deploy would only be triggered by pushes
   push:
     branches: feat/ci-cd # just trying if it works. This should be main branch
 jobs:
