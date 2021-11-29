@@ -1,6 +1,7 @@
 package database
 
 import (
+	"comiditapp/api/env"
 	"context"
 	"log"
 	"os"
@@ -9,11 +10,18 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func createClient() *mongo.Client {
+func createClient() (*mongo.Client, *mongo.Database) {
+	// client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(os.Getenv("MONGODB_URI")))
 
-	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(os.Getenv("MONGODB_URI")))
+	client, err := mongo.NewClient(options.Client().ApplyURI(os.Getenv("MONGODB_URI")))
 
 	if err != nil {
+		log.Fatal("Error creating mongo client ❌: ", err)
+	}
+
+	println("Mongo client created ✅")
+
+	if err = client.Connect(context.TODO()); err != nil {
 		log.Fatal("Error when connecting to database ❌: ", err)
 	}
 
@@ -26,5 +34,8 @@ func createClient() *mongo.Client {
 	}
 
 	println("Ping done succesfully ✅")
-	return client
+
+	var db = client.Database(env.DB_NAME)
+
+	return client, db
 }
