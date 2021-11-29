@@ -31,4 +31,6 @@ jobs:
           host: ${{ secrets.DO_HOST }}
           username: ${{ secrets.DO_USER }}
           password: ${{ secrets.DO_PASSWORD }}
-        run: cd /comiditapp-pruebas && echo "hello from github actions >> message.txt"
+          script: |
+            cd /comiditapp-pruebas
+            echo "hello from github actions >> message.txt"
