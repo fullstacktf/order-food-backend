@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func FindRestaurants(repository repository.MockedUsersRepository) gin.HandlerFunc {
+func FindRestaurants(repository repository.MongoUsersRepository) gin.HandlerFunc {
 	return func(context *gin.Context) {
 		context.IndentedJSON(http.StatusOK, repository.FindRestaurants(context))
 	}

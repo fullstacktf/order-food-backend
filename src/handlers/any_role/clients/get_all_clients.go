@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func FindClients(repository repository.MockedUsersRepository) gin.HandlerFunc {
+func FindClients(repository repository.MongoUsersRepository) gin.HandlerFunc {
 	return func(context *gin.Context) {
 		context.IndentedJSON(http.StatusOK, repository.FindClients(context))
 	}

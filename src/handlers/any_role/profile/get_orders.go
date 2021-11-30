@@ -7,8 +7,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetOrders(repository repository.MockedOrdersRepository) gin.HandlerFunc {
+func FindOrders(repository repository.MongoOrdersRepository) gin.HandlerFunc {
 	return func(context *gin.Context) {
-		context.IndentedJSON(http.StatusOK, repository.GetOrders(context))
+		context.IndentedJSON(http.StatusOK, repository.FindOrders(context))
 	}
 }

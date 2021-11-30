@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func UpdateProduct(repository repository.MockedUsersRepository) gin.HandlerFunc {
+func UpdateProduct(repository repository.MongoUsersRepository) gin.HandlerFunc {
 	return func(context *gin.Context) {
 		context.IndentedJSON(http.StatusOK, repository.UpdateProduct(context))
 	}

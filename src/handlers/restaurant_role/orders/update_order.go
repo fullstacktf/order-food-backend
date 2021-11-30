@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func UpdateClientOrder(repository repository.MockedOrdersRepository) gin.HandlerFunc {
+func UpdateClientOrder(repository repository.MongoOrdersRepository) gin.HandlerFunc {
 	return func(context *gin.Context) {
 		context.IndentedJSON(http.StatusOK, repository.UpdateClientOrder(context))
 	}
