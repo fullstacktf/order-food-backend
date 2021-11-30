@@ -26,15 +26,15 @@ func main() {
 	r := gin.Default()
 
 	// any role users
-	home.Routes(r)
-	auth.Routes(r)
-	restaurants.Routes(r)
-	client.Routes(r)
-	profile.Routes(r)
+	home.Routes(r, db)
+	auth.Routes(r, db)
+	restaurants.Routes(r, db)
+	client.Routes(r, db)
+	profile.Routes(r, db)
 
 	// only restaurant role users
-	orders.Routes(r)
-	products.Routes(r)
+	orders.Routes(r, db)
+	products.Routes(r, db)
 
 	r.Run()
 
