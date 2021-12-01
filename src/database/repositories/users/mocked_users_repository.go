@@ -41,10 +41,10 @@ func (r *MockedUsersRepository) SignUpUser(context *gin.Context) models.User {
 
 	err := validate.Struct(newUser)
 	if err != nil {
-		errorMsg := "Cannot create order, required fields not provided...\n" + err.(validator.ValidationErrors).Error()
+		errorMsg := "Cannot create user, required fields not provided...\n" + err.(validator.ValidationErrors).Error()
 
 		http.Error(context.Writer, errorMsg, http.StatusBadRequest)
-		panic(err)
+		panic(errorMsg)
 	}
 
 	users = append(users, newUser)
