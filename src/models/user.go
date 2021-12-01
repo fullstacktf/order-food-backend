@@ -7,7 +7,7 @@ import (
 )
 
 type User struct {
-	Id             primitive.ObjectID `json:"id" bson:"id" validate:"required"`
+	Id             primitive.ObjectID `json:"id" bson:"id"`
 	Role           enums.Role         `json:"role" bson:"role" validate:"required"`
 	Name           string             `json:"name" bson:"name" validate:"required"`
 	Email          string             `json:"email" bson:"email" validate:"required,email"`
