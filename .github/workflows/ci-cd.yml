@@ -17,19 +17,36 @@ jobs:
     - name: Test
       run: cd src && go test ./...
 
-  deploy:
+  build-docker:
     needs: test
     runs-on: ubuntu-latest
-    # Deploy only when pushing onto main (or merging PR)
     if: github.event_name == 'push' && ${{ github.ref == 'refs/heads/main' }}
     steps:
-      - name: Deploy to Digital Ocean droplet via SSH action
-        uses: fifsky/ssh-action@master
-        with:
-          host: ${{ secrets.DO_HOST }}
-          user: ${{ secrets.DO_USER }}
-          key: ${{ secrets.DO_KEY }}
-          command: |
-            cd /comiditapp-pruebas
-            echo 'hello from github actions' >> message.txt
-          args: "-tt"
+    - name: build Docker image and push it to dockerhub
+      id: build-docker
+      uses: mr-smithers-excellent/docker-build-push@v5
+      with:
+      image: jncabdom/comiditapp
+      registry: docker.io
+      username: ${{ secrets.DOCKER_USERNAME }}
+      password: ${{ secrets.DOCKER_PASSWORD }}
+      addLatest: true
+    - name: Get output
+      run: echo "Pushed image ${{ steps.build-docker.outputs.imageName }} with tag ${{ steps.build-docker.outputs.tags }}"
+
+#  deploy:
+#    needs: test
+#    runs-on: ubuntu-latest
+#    # Only when pushing onto main (or merging PR)
+#    if: github.event_name == 'push' && ${{ github.ref == 'refs/heads/main' }}
+#    steps:
+#      - name: Deploy to Digital Ocean droplet via SSH action
+#        uses: fifsky/ssh-action@master
+#        with:
+#          host: ${{ secrets.DO_HOST }}
+#          user: ${{ secrets.DO_USER }}
+#          key: ${{ secrets.DO_KEY }}
+#          command: |
+#            cd /comiditapp-pruebas
+#            echo 'hello from github actions' >> message.txt
+#          args: "-tt"
