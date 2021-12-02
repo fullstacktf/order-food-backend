@@ -22,6 +22,8 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && ${{ github.ref == 'refs/heads/main' }}
     steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
     - name: build Docker image and push it to dockerhub
       id: build-docker
       uses: mr-smithers-excellent/docker-build-push@v5
