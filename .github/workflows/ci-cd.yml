@@ -64,6 +64,6 @@ jobs:
           command: |
             cd /comiditapp-pruebas
             make stop
-            docker pull $(echo env_var:$REGISTRY)/$(echo env_var:$IMAGE_NAME):latest
+            docker pull registry.digitalocean.com/comiditapp/comiditapp-backend:latest
             make
           args: "-tt"
