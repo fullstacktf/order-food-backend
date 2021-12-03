@@ -63,5 +63,7 @@ jobs:
           key: ${{ secrets.DO_KEY }}
           command: |
             cd /comiditapp-pruebas
+            make stop
+            docker pull $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) $(echo $REGISTRY)/$(echo $IMAGE_NAME):latest
             make
           args: "-tt"
