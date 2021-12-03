@@ -65,4 +65,3 @@ jobs:
             cd /comiditapp-pruebas
             make
           args: "-tt"
-
