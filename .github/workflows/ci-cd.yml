@@ -50,7 +50,7 @@ jobs:
 #      run: docker push $(echo $REGISTRY)/$(echo $IMAGE_NAME):latest
 
   deploy:
-    #needs: [test, build-docker]
+#    needs: [test, build-docker]
     runs-on: ubuntu-latest
     # Only when pushing onto main (or merging PR)
     #if: github.event_name == 'push' && ${{ github.ref == 'refs/heads/main' }}
@@ -64,6 +64,6 @@ jobs:
           command: |
             cd /comiditapp-pruebas
             make stop
-          run: docker pull $(echo $REGISTRY)/$(echo $IMAGE_NAME):latest
-          run: make
+            docker pull $(echo $REGISTRY)/$(echo $IMAGE_NAME):latest
+            make
           args: "-tt"
