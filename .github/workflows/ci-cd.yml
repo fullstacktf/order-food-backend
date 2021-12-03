@@ -53,18 +53,6 @@ jobs:
     - name: Push image to DigitalOcean Container Registry
       run: docker push $(echo $REGISTRY)/$(echo $IMAGE_NAME):latest
 
-#    - name: build Docker image and push it to dockerhub
-#      id: build-docker
-#      uses: mr-smithers-excellent/docker-build-push@v5
-#      with:
-#        image: jncabdom/comiditapp
-#        registry: docker.io
-#        username: ${{ secrets.DOCKER_USERNAME }}
-#        password: ${{ secrets.DOCKER_PASSWORD }}
-#        addLatest: true
-#    - name: Get output
-#      run: echo "Pushed image ${{ steps.build-docker.outputs.imageName }} with tag ${{ steps.build-docker.outputs.tags }}"
-
 #  deploy:
 #    needs: test
 #    runs-on: ubuntu-latest
