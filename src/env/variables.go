@@ -13,10 +13,12 @@ var PORT string
 
 func LoadEnv() {
 
-	err := godotenv.Load("./.env")
+	if os.Getenv("ENV") != "PROD" {
+		err := godotenv.Load("./.env")
 
-	if err != nil {
-		log.Fatal("Error loading .env file ❌: ", err)
+		if err != nil {
+			log.Fatal("Error loading .env file ❌: ", err)
+		}
 	}
 
 	MONGODB_URI = os.Getenv("MONGODB_URI")
