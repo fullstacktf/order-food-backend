@@ -20,21 +20,36 @@ jobs:
   build-docker:
     needs: test
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    #if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-    - name: build Docker image and push it to dockerhub
-      id: build-docker
-      uses: mr-smithers-excellent/docker-build-push@v5
+
+    - name: Build container image
+      run: docker build -t $(echo $DO_REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) .
+
+    - name: Install doctl
+      uses: digitalocean/action-doctl@v2
       with:
-        image: jncabdom/comiditapp
-        registry: docker.io
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-        addLatest: true
-    - name: Get output
-      run: echo "Pushed image ${{ steps.build-docker.outputs.imageName }} with tag ${{ steps.build-docker.outputs.tags }}"
+        token: ${{ secrets.DO_ACCESS_TOKEN }}
+
+    - name: Log in to DigitalOcean Container Registry with short-lived credentials
+      run: doctl registry login --expiry-seconds 600
+
+    - name: Push image to DigitalOcean Container Registry
+      run: docker push $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
+
+#    - name: build Docker image and push it to dockerhub
+#      id: build-docker
+#      uses: mr-smithers-excellent/docker-build-push@v5
+#      with:
+#        image: jncabdom/comiditapp
+#        registry: docker.io
+#        username: ${{ secrets.DOCKER_USERNAME }}
+#        password: ${{ secrets.DOCKER_PASSWORD }}
+#        addLatest: true
+#    - name: Get output
+#      run: echo "Pushed image ${{ steps.build-docker.outputs.imageName }} with tag ${{ steps.build-docker.outputs.tags }}"
 
 #  deploy:
 #    needs: test
