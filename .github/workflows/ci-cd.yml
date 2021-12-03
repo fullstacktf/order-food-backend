@@ -49,19 +49,19 @@ jobs:
     - name: Push image to DigitalOcean Container Registry
       run: docker push $(echo $REGISTRY)/$(echo $IMAGE_NAME):latest
 
-#  deploy:
-#    needs: test
-#    runs-on: ubuntu-latest
-#    # Only when pushing onto main (or merging PR)
-#    if: github.event_name == 'push' && ${{ github.ref == 'refs/heads/main' }}
-#    steps:
-#      - name: Deploy to Digital Ocean droplet via SSH action
-#        uses: fifsky/ssh-action@master
-#        with:
-#          host: ${{ secrets.DO_HOST }}
-#          user: ${{ secrets.DO_USER }}
-#          key: ${{ secrets.DO_KEY }}
-#          command: |
-#            cd /comiditapp-pruebas
-#            echo 'hello from github actions' >> message.txt
-#          args: "-tt"
+  deploy:
+    needs: [test, build-docker]
+    runs-on: ubuntu-latest
+    # Only when pushing onto main (or merging PR)
+    #if: github.event_name == 'push' && ${{ github.ref == 'refs/heads/main' }}
+    steps:
+      - name: Deploy to Digital Ocean droplet via SSH action
+        uses: fifsky/ssh-action@master
+        with:
+          host: ${{ secrets.DO_HOST }}
+          user: ${{ secrets.DO_USER }}
+          key: ${{ secrets.DO_KEY }}
+          command: |
+            cd /comiditapp-pruebas
+            make
+          args: "-tt"
