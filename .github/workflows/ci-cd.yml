@@ -6,54 +6,54 @@ env:
   IMAGE_NAME: "comiditapp-backend"
 
 jobs:
-#  test:
-#    runs-on: ubuntu-latest
-#    steps:
-#    - name: Install Go
-#      uses: actions/setup-go@v2
-#      with:
-#        go-version: 1.17.x
-#    - name: Checkout code
-#      uses: actions/checkout@v2
-#    - name: Test
-#      run: cd src && go test ./...
-#
-#  build-docker:
-#    needs: test
-#    runs-on: ubuntu-latest
-#    #if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-#    steps:
-#    - name: Checkout code
-#      uses: actions/checkout@v2
-#
-#    - name: Build container image
-#      run: docker build -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) .
-#
-#    - name: Install doctl
-#      uses: digitalocean/action-doctl@v2
-#      with:
-#        token: ${{ secrets.DO_ACCESS_TOKEN }}
-#
-#    - name: Log in to DigitalOcean Container Registry with short-lived credentials
-#      run: doctl registry login --expiry-seconds 600
-#
-#    - name: Push image to DigitalOcean Container Registry
-#      run: docker push $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
-#
-#    - name: Change name to latest for push
-#      run: docker tag $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) $(echo $REGISTRY)/$(echo $IMAGE_NAME):latest
-#
-#    - name: Log in to DigitalOcean Container Registry with short-lived credentials
-#      run: doctl registry login --expiry-seconds 600
-#
-#    - name: Push image to DigitalOcean Container Registry
-#      run: docker push $(echo $REGISTRY)/$(echo $IMAGE_NAME):latest
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.17.x
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Test
+      run: cd src && go test ./...
+
+  build-docker:
+    needs: test
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build container image
+      run: docker build -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) .
+
+    - name: Install doctl
+      uses: digitalocean/action-doctl@v2
+      with:
+        token: ${{ secrets.DO_ACCESS_TOKEN }}
+
+    - name: Log in to DigitalOcean Container Registry with short-lived credentials
+      run: doctl registry login --expiry-seconds 600
+
+    - name: Push image to DigitalOcean Container Registry
+      run: docker push $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
+
+    - name: Change name to latest for push
+      run: docker tag $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) $(echo $REGISTRY)/$(echo $IMAGE_NAME):latest
+
+    - name: Log in to DigitalOcean Container Registry with short-lived credentials
+      run: doctl registry login --expiry-seconds 600
+
+    - name: Push image to DigitalOcean Container Registry
+      run: docker push $(echo $REGISTRY)/$(echo $IMAGE_NAME):latest
 
   deploy:
-#    needs: [test, build-docker]
+    needs: [test, build-docker]
     runs-on: ubuntu-latest
     # Only when pushing onto main (or merging PR)
-    #if: github.event_name == 'push' && ${{ github.ref == 'refs/heads/main' }}
+    if: github.event_name == 'push' && ${{ github.ref == 'refs/heads/main' }}
     steps:
       - name: Deploy to Digital Ocean droplet via SSH action
         uses: fifsky/ssh-action@master
