@@ -2,13 +2,13 @@ package auth_handler
 
 import (
 	repository "comiditapp/api/database/repositories/users"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-func SignUpUser(repository repository.MongoUsersRepository) gin.HandlerFunc {
+func SignUpUser(repository *repository.MongoUsersRepository) gin.HandlerFunc {
 	return func(context *gin.Context) {
-		context.IndentedJSON(http.StatusCreated, repository.SignUpUser(context))
+		statusCode, response := repository.SignUpUser(context)
+		context.IndentedJSON(statusCode, response)
 	}
 }
