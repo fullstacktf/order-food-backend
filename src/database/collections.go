@@ -6,7 +6,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-var collection_names []string = []string{"user", "order"}
+var collection_names []string = []string{"users", "orders"}
 
 func getAllCollections(client *mongo.Client) map[string]*mongo.Collection {
 

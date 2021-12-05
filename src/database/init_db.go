@@ -12,7 +12,7 @@ func (db *DB) Init() {
 	ordersRepo := orders_repository.NewMongoOrdersRepository(db.Database)
 	usersRepo := users_repository.NewMongoUsersRepository(db.Database)
 
-	db.OrdersRepository, db.UsersRepository = *ordersRepo, *usersRepo
+	db.OrdersRepository, db.UsersRepository = ordersRepo, usersRepo
 
 	db.Collections = getAllCollections(db.Client)
 	println("Collections initialized succesfully ✅")
