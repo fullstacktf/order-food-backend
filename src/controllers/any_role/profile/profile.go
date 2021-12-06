@@ -11,9 +11,8 @@ import (
 func Routes(r *gin.Engine, db database.DB) {
 	profileGroup := r.Group("/profile")
 	{
-		// This endpoint is temporary using id as we still working in register and login
 		profileGroup.PUT("/:id", profile_handler.UpdateProfile(db.UsersRepository))
-
+		profileGroup.DELETE("/:id", profile_handler.DeleteAccount(db.UsersRepository))
 		profileGroup.GET("/orders", profile_handler.FindOrders(db.OrdersRepository))
 		profileGroup.GET("/orders/:id", profile_handler.GetOrderById(db.OrdersRepository))
 	}

@@ -11,8 +11,6 @@ import (
 )
 
 func createClient() (*mongo.Client, *mongo.Database) {
-	// client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(os.Getenv("MONGODB_URI")))
-
 	client, err := mongo.NewClient(options.Client().ApplyURI(os.Getenv("MONGODB_URI")))
 
 	if err != nil {
