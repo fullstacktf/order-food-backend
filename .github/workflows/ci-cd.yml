@@ -62,7 +62,7 @@ jobs:
           user: ${{ secrets.DO_USER }}
           key: ${{ secrets.DO_KEY }}
           command: |
-            cd /comiditapp-pruebas
+            cd /comiditapp/back
             make stop
             docker pull registry.digitalocean.com/comiditapp/comiditapp-backend:latest
             make
