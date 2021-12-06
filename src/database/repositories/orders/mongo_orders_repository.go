@@ -2,7 +2,6 @@ package repository
 
 import (
 	"comiditapp/api/models"
-	"encoding/json"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -74,7 +73,9 @@ func (r *MongoOrdersRepository) CreateOrder(context *gin.Context) (statusCode in
 	var validate *validator.Validate = validator.New()
 	var newOrder models.Order
 
-	json.NewDecoder(context.Request.Body).Decode(&newOrder)
+	if err := context.BindJSON(&newOrder); err != nil {
+		return http.StatusBadRequest, err.Error()
+	}
 
 	err := validate.Struct(newOrder)
 	if err != nil {
@@ -89,9 +90,9 @@ func (r *MongoOrdersRepository) CreateOrder(context *gin.Context) (statusCode in
 		return http.StatusBadRequest, errorMessage
 	}
 
-	newId := primitive.NewObjectID()
+	id := primitive.NewObjectID()
 	order := &models.Order{
-		Id:           newId,
+		Id:           id,
 		ClientId:     newOrder.ClientId,
 		RestaurantId: restaurantId,
 		Status:       newOrder.Status,
@@ -103,8 +104,7 @@ func (r *MongoOrdersRepository) CreateOrder(context *gin.Context) (statusCode in
 		return http.StatusBadRequest, err.Error()
 	}
 
-	message := "Order " + newId.Hex() + " created succesfully"
-	return http.StatusCreated, message
+	return http.StatusCreated, id.Hex()
 }
 
 // restaurant_role methods
@@ -119,7 +119,9 @@ func (r *MongoOrdersRepository) UpdateClientOrder(context *gin.Context) (statusC
 	var validate *validator.Validate = validator.New()
 	var newOrder models.Order
 
-	json.NewDecoder(context.Request.Body).Decode(&newOrder)
+	if err := context.BindJSON(&newOrder); err != nil {
+		return http.StatusBadRequest, err.Error()
+	}
 
 	err := validate.Struct(newOrder)
 	if err != nil {
@@ -128,27 +130,22 @@ func (r *MongoOrdersRepository) UpdateClientOrder(context *gin.Context) (statusC
 		return http.StatusBadRequest, errorMessage
 	}
 
-	orderId, err := primitive.ObjectIDFromHex(context.Param("id"))
+	id, err := primitive.ObjectIDFromHex(context.Param("id"))
 	if err != nil {
 		errorMessage := "Bad request, " + context.Param("id") + " is not a valid ID"
 		return http.StatusBadRequest, errorMessage
 	}
 
-	order := &models.Order{
-		Id:           orderId,
-		RestaurantId: newOrder.RestaurantId,
-		ClientId:     newOrder.ClientId,
-		Status:       newOrder.Status,
-		TotalPrice:   newOrder.TotalPrice,
-		Products:     newOrder.Products,
+	filter := bson.M{"id": bson.M{"$eq": id}}
+	update := bson.M{
+		"$set": bson.M{"status": newOrder.Status},
 	}
 
-	if _, err := r.orders.InsertOne(context, order); err != nil {
+	if _, err := r.orders.UpdateOne(context, filter, update); err != nil {
 		return http.StatusBadRequest, err.Error()
 	}
 
-	message := "Order " + orderId.Hex() + " updated succesfully"
-	return http.StatusOK, message
+	return http.StatusOK, id.Hex()
 }
 
 // Para esto necesitamos los permisos del restaurante para realizar las acciones, se sacará del JWT
@@ -156,6 +153,5 @@ func (r *MongoOrdersRepository) UpdateClientOrder(context *gin.Context) (statusC
 // Este endpoint es como el de devolver todas las orders, solo que cuando tengamos JWT sabremos el restaurante
 // cuyas orders hay que traer. No lo hago porque es casi idéntico, esperaré a tener JWT
 func (r *MongoOrdersRepository) FindClientOrders(context *gin.Context) (statusCode int, response interface{}) {
-
 	return 0, &[]models.Order{}
 }

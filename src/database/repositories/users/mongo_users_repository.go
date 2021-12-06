@@ -2,7 +2,6 @@ package repository
 
 import (
 	"comiditapp/api/models"
-	"encoding/json"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -21,19 +20,34 @@ func NewMongoUsersRepository(db *mongo.Database) *MongoUsersRepository {
 }
 
 // any_role methods
-// A este método probablemente sea al que tengamos que añadir cosas del JWT
-func (r *MongoUsersRepository) SignUpUser(context *gin.Context) (statusCode int, response interface{}) {
 
+// POST - http://localhost:3000/auth/signup
+// Actualmente crea correctamente un usuario.
+// Deberia encargarse tambien de generar el JSON web token
+func (r *MongoUsersRepository) SignUpUser(context *gin.Context) (statusCode int, response interface{}) {
 	var validate *validator.Validate = validator.New()
 	var newUser models.User
 
-	json.NewDecoder(context.Request.Body).Decode(&newUser)
+	if err := context.BindJSON(&newUser); err != nil {
+		return http.StatusBadRequest, err.Error()
+	}
 
 	err := validate.Struct(newUser)
 	if err != nil {
 		validatorError := err.(validator.ValidationErrors).Error()
 		errorMessage := "Cannot create user, required fields not provided\n" + validatorError
 		return http.StatusBadRequest, errorMessage
+	}
+
+	parsedMenu := []models.Product{}
+	for _, product := range newUser.Menu {
+		newProduct := models.Product{
+			Id:       primitive.NewObjectID(),
+			Category: product.Category,
+			Name:     product.Name,
+			Price:    product.Price,
+		}
+		parsedMenu = append(parsedMenu, newProduct)
 	}
 
 	newId := primitive.NewObjectID()
@@ -45,23 +59,24 @@ func (r *MongoUsersRepository) SignUpUser(context *gin.Context) (statusCode int,
 		HashedPassword: newUser.HashedPassword,
 		Phone:          newUser.Phone,
 		Address:        newUser.Address,
-		Menu:           newUser.Menu,
+		Menu:           parsedMenu,
 	}
 
 	if _, err := r.users.InsertOne(context, user); err != nil {
 		return http.StatusBadRequest, err.Error()
 	}
 
-	message := "User " + newId.Hex() + " updated succesfully"
-	return http.StatusCreated, message
+	return http.StatusCreated, newId.Hex()
 }
 
 // TODO: Implement JWT auth
+// POST - http://localhost:3000/auth/signin
 func (r *MongoUsersRepository) SignInUser(context *gin.Context) (statusCode int, response interface{}) {
 	return 0, &models.User{}
 }
-func (r *MongoUsersRepository) FindRestaurants(context *gin.Context) (statusCode int, response interface{}) {
 
+// GET - http://localhost:3000/restaurants
+func (r *MongoUsersRepository) FindRestaurants(context *gin.Context) (statusCode int, response interface{}) {
 	foundRestaurants, err := r.users.Find(context, bson.M{"role": "restaurant"})
 	if err != nil {
 		return http.StatusConflict, err.Error()
@@ -74,12 +89,18 @@ func (r *MongoUsersRepository) FindRestaurants(context *gin.Context) (statusCode
 
 	return http.StatusOK, restaurants
 }
-func (r *MongoUsersRepository) GetRestaurantById(context *gin.Context) (statusCode int, response interface{}) {
 
+// GET - http://localhost:3000/restaurants/:id
+func (r *MongoUsersRepository) GetRestaurantById(context *gin.Context) (statusCode int, response interface{}) {
 	var restaurant models.User
 
-	// De el filtro aplicado el que no funciona es el de id
-	filter := bson.M{"role": "restaurant", "id": context.Param("id")}
+	id, err := primitive.ObjectIDFromHex(context.Param("id"))
+	if err != nil {
+		errorMessage := "Bad request, " + context.Param("id") + " is not a valid ID"
+		return http.StatusBadRequest, errorMessage
+	}
+
+	filter := bson.M{"role": "restaurant", "id": id}
 	if err := r.users.FindOne(context, filter).Decode(&restaurant); err != nil {
 		return http.StatusNotFound, err.Error()
 	}
@@ -87,8 +108,8 @@ func (r *MongoUsersRepository) GetRestaurantById(context *gin.Context) (statusCo
 	return http.StatusOK, restaurant
 }
 
+// GET - http://localhost:3000/clients
 func (r *MongoUsersRepository) FindClients(context *gin.Context) (statusCode int, response interface{}) {
-
 	foundRestaurants, err := r.users.Find(context, bson.M{"role": "client"})
 	if err != nil {
 		return http.StatusConflict, err.Error()
@@ -102,11 +123,17 @@ func (r *MongoUsersRepository) FindClients(context *gin.Context) (statusCode int
 	return http.StatusOK, clients
 }
 
+// GET - http://localhost:3000/clients/:id
 func (r *MongoUsersRepository) GetClientById(context *gin.Context) (statusCode int, response interface{}) {
 	var client models.User
 
-	// De el filtro aplicado el que no funciona es el de id
-	filter := bson.M{"role": "client", "id": context.Param("id")}
+	id, err := primitive.ObjectIDFromHex(context.Param("id"))
+	if err != nil {
+		errorMessage := "Bad request, " + context.Param("id") + " is not a valid ID"
+		return http.StatusBadRequest, errorMessage
+	}
+
+	filter := bson.M{"role": "client", "id": id}
 	if err := r.users.FindOne(context, filter).Decode(&client); err != nil {
 		return http.StatusNotFound, err.Error()
 	}
@@ -114,12 +141,71 @@ func (r *MongoUsersRepository) GetClientById(context *gin.Context) (statusCode i
 	return http.StatusOK, &client
 }
 
-// Hasta que no funcione el buscar un elemento por id poco podemos hacer con estos endpoints
+// GET - http://localhost:3000/restaurants/:id/products
 func (r *MongoUsersRepository) GetRestaurantProducts(context *gin.Context) (statusCode int, response interface{}) {
-	return 0, &[]models.Product{}
+	var restaurant models.User
+
+	id, err := primitive.ObjectIDFromHex(context.Param("id"))
+	if err != nil {
+		errorMessage := "Bad request, " + context.Param("id") + " is not a valid ID"
+		return http.StatusBadRequest, errorMessage
+	}
+
+	filter := bson.M{"role": "restaurant", "id": id}
+	if err := r.users.FindOne(context, filter).Decode(&restaurant); err != nil {
+		return http.StatusNotFound, err.Error()
+	}
+
+	products := restaurant.Menu
+
+	return http.StatusOK, products
 }
+
+// PUT - http://localhost:3000/profile/:id
 func (r *MongoUsersRepository) UpdateProfile(context *gin.Context) (statusCode int, response interface{}) {
-	return 0, &models.User{}
+	var validate *validator.Validate = validator.New()
+	var newUser models.User
+
+	if err := context.BindJSON(&newUser); err != nil {
+		return http.StatusBadRequest, err.Error()
+	}
+
+	err := validate.Struct(newUser)
+	if err != nil {
+		validatorError := err.(validator.ValidationErrors).Error()
+		errorMessage := "Cannot update user, required fields not provided\n" + validatorError
+		return http.StatusBadRequest, errorMessage
+	}
+
+	parsedMenu := []models.Product{}
+	for _, product := range newUser.Menu {
+		newProduct := models.Product{
+			Id:       primitive.NewObjectID(),
+			Category: product.Category,
+			Name:     product.Name,
+			Price:    product.Price,
+		}
+		parsedMenu = append(parsedMenu, newProduct)
+	}
+
+	id, err := primitive.ObjectIDFromHex(context.Param("id"))
+	if err != nil {
+		errorMessage := "Bad request, " + context.Param("id") + " is not a valid ID"
+		return http.StatusBadRequest, errorMessage
+	}
+
+	filter := bson.M{"id": bson.M{"$eq": id}}
+	update := bson.M{
+		"$set": bson.M{"role": newUser.Role, "name": newUser.Name, "email": newUser.Email,
+			"hashedPassword": newUser.HashedPassword, "phone": newUser.Phone,
+			"address": newUser.Address, "menu": parsedMenu},
+	}
+
+	if _, err := r.users.UpdateOne(context, filter, update); err != nil {
+		return http.StatusBadRequest, err.Error()
+	}
+
+	return http.StatusOK, id.Hex()
 }
 
 // restaurant_role methods
