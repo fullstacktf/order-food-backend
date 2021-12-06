@@ -73,9 +73,7 @@ func (r *MongoOrdersRepository) CreateOrder(context *gin.Context) (statusCode in
 	var validate *validator.Validate = validator.New()
 	var newOrder models.Order
 
-	if err := context.BindJSON(&newOrder); err != nil {
-		return http.StatusBadRequest, err.Error()
-	}
+	context.BindJSON(&newOrder)
 
 	err := validate.Struct(newOrder)
 	if err != nil {
@@ -119,9 +117,7 @@ func (r *MongoOrdersRepository) UpdateClientOrder(context *gin.Context) (statusC
 	var validate *validator.Validate = validator.New()
 	var newOrder models.Order
 
-	if err := context.BindJSON(&newOrder); err != nil {
-		return http.StatusBadRequest, err.Error()
-	}
+	context.BindJSON(&newOrder)
 
 	err := validate.Struct(newOrder)
 	if err != nil {
@@ -137,10 +133,7 @@ func (r *MongoOrdersRepository) UpdateClientOrder(context *gin.Context) (statusC
 	}
 
 	filter := bson.M{"id": bson.M{"$eq": id}}
-	update := bson.M{
-		"$set": bson.M{"status": newOrder.Status},
-	}
-
+	update := bson.M{"$set": bson.M{"status": newOrder.Status}}
 	if _, err := r.orders.UpdateOne(context, filter, update); err != nil {
 		return http.StatusBadRequest, err.Error()
 	}

@@ -28,9 +28,7 @@ func (r *MongoUsersRepository) SignUpUser(context *gin.Context) (statusCode int,
 	var validate *validator.Validate = validator.New()
 	var newUser models.User
 
-	if err := context.BindJSON(&newUser); err != nil {
-		return http.StatusBadRequest, err.Error()
-	}
+	context.BindJSON(&newUser)
 
 	err := validate.Struct(newUser)
 	if err != nil {
@@ -166,9 +164,7 @@ func (r *MongoUsersRepository) UpdateProfile(context *gin.Context) (statusCode i
 	var validate *validator.Validate = validator.New()
 	var newUser models.User
 
-	if err := context.BindJSON(&newUser); err != nil {
-		return http.StatusBadRequest, err.Error()
-	}
+	context.BindJSON(&newUser)
 
 	err := validate.Struct(newUser)
 	if err != nil {
@@ -180,7 +176,7 @@ func (r *MongoUsersRepository) UpdateProfile(context *gin.Context) (statusCode i
 	parsedMenu := []models.Product{}
 	for _, product := range newUser.Menu {
 		newProduct := models.Product{
-			Id:       primitive.NewObjectID(),
+			Id:       product.Id,
 			Category: product.Category,
 			Name:     product.Name,
 			Price:    product.Price,
@@ -203,6 +199,23 @@ func (r *MongoUsersRepository) UpdateProfile(context *gin.Context) (statusCode i
 
 	if _, err := r.users.UpdateOne(context, filter, update); err != nil {
 		return http.StatusBadRequest, err.Error()
+	}
+
+	return http.StatusOK, id.Hex()
+}
+
+// DELETE - http://localhost:3000/profile/:id
+func (r *MongoUsersRepository) DeleteAccount(context *gin.Context) (statusCode int, response interface{}) {
+	id, err := primitive.ObjectIDFromHex(context.Param("id"))
+	if err != nil {
+		errorMessage := "Bad request, " + context.Param("id") + " is not a valid ID"
+		return http.StatusBadRequest, errorMessage
+	}
+
+	filter := bson.M{"id": bson.M{"$eq": id}}
+	result := r.users.FindOneAndDelete(context, filter)
+	if result.Err() != nil {
+		return http.StatusBadRequest, result.Err().Error()
 	}
 
 	return http.StatusOK, id.Hex()
