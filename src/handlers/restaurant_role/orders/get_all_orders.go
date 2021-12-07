@@ -1,11 +1,14 @@
 package order_handler
 
 import (
-	"net/http"
+	repository "comiditapp/api/database/repositories/orders"
 
 	"github.com/gin-gonic/gin"
 )
 
-func GetAllOrders(c *gin.Context) {
-	c.String(http.StatusOK, "GetAllOrders handler")
+func FindClientOrders(repository *repository.MongoOrdersRepository) gin.HandlerFunc {
+	return func(context *gin.Context) {
+		statusCode, response := repository.FindClientOrders(context)
+		context.IndentedJSON(statusCode, response)
+	}
 }

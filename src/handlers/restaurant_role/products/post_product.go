@@ -1,11 +1,14 @@
 package product_handler
 
 import (
-	"net/http"
+	repository "comiditapp/api/database/repositories/users"
 
 	"github.com/gin-gonic/gin"
 )
 
-func PostProduct(c *gin.Context) {
-	c.String(http.StatusOK, "PostProduct handler")
+func CreateProduct(repository *repository.MongoUsersRepository) gin.HandlerFunc {
+	return func(context *gin.Context) {
+		statusCode, response := repository.CreateProduct(context)
+		context.IndentedJSON(statusCode, response)
+	}
 }

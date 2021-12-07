@@ -1,13 +1,18 @@
 package models
 
-import "comiditapp/api/enums"
+import (
+	"comiditapp/api/enums"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
 
 type User struct {
-	Role           enums.Role `json:"role"`
-	Name           string     `json:"name"`
-	Email          string     `json:"email"`
-	HashedPassword string     `json:"hashedPassword"`
-	Phone          int        `json:"phone"`
-	Address        []Address  `json:"address"`
-	Menu           []Product  `json:"menu,omitempty"`
+	Id             primitive.ObjectID `json:"id" bson:"id"`
+	Role           enums.Role         `json:"role" bson:"role" validate:"required"`
+	Name           string             `json:"name" bson:"name" validate:"required"`
+	Email          string             `json:"email" bson:"email" validate:"required,email"`
+	HashedPassword string             `json:"hashedPassword" bson:"hashedPassword" validate:"required"`
+	Phone          int                `json:"phone" bson:"phone" validate:"required"`
+	Address        []Address          `json:"address" bson:"address" validate:"required"`
+	Menu           []Product          `json:"menu,omitempty" bson:"menu,omitempty"`
 }

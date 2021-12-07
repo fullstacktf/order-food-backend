@@ -1,11 +1,14 @@
 package restaurant_handler
 
 import (
-	"net/http"
+	repository "comiditapp/api/database/repositories/users"
 
 	"github.com/gin-gonic/gin"
 )
 
-func GetRestaurantProducts(c *gin.Context) {
-	c.String(http.StatusOK, "GetRestaurantProducts handler")
+func GetRestaurantProducts(repository *repository.MongoUsersRepository) gin.HandlerFunc {
+	return func(context *gin.Context) {
+		statusCode, response := repository.GetRestaurantProducts(context)
+		context.IndentedJSON(statusCode, response)
+	}
 }

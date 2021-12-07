@@ -1,14 +1,20 @@
-package users_repository
+package repository
 
-import (
-	"comiditapp/api/models"
-	"context"
-
-	"go.mongodb.org/mongo-driver/bson/primitive"
-)
+import "github.com/gin-gonic/gin"
 
 type UsersRepository interface {
-	createUser(ctx context.Context, user models.User) // Endpoint -> /auth/signup
-	updateUser(ctx context.Context, user models.User) // Endpoint -> /profile
-	findUserById(ctx context.Context, id primitive.ObjectID)
+	// any_role methods
+	SignUpUser(context *gin.Context)            // Endpoint -> /auth/signup
+	SignInUser(context *gin.Context)            // Endpoint -> /auth/signin
+	FindRestaurants(context *gin.Context)       // Endpoint -> /restaurants
+	GetRestaurantById(context *gin.Context)     // Endpoint -> /restaurants/:id
+	FindClients(context *gin.Context)           // Endpoint -> /clients
+	GetClientById(context *gin.Context)         // Endpoint -> /clients/:id
+	GetRestaurantProducts(context *gin.Context) // Endpoint -> /restaurants/:id/products
+	UpdateProfile(context *gin.Context)         // Endpoint -> /profile
+
+	// restaurant_role methods
+	FindProducts(context *gin.Context)  // Endpoint -> /products
+	CreateProduct(context *gin.Context) // Endpoint -> /products
+	UpdateProduct(context *gin.Context) // Endpoint -> /products/:id
 }

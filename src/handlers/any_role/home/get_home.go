@@ -7,5 +7,5 @@ import (
 )
 
 func GetHome(c *gin.Context) {
-	c.String(http.StatusOK, "GetHome handler")
+	c.String(http.StatusOK, "Welcome to comiditapp homepage!! 🍔")
 }

@@ -1,11 +1,14 @@
 package profile_handler
 
 import (
-	"net/http"
+	repository "comiditapp/api/database/repositories/users"
 
 	"github.com/gin-gonic/gin"
 )
 
-func UpdateProfile(c *gin.Context) {
-	c.String(http.StatusOK, "UpdateProfile handler")
+func UpdateProfile(repository *repository.MongoUsersRepository) gin.HandlerFunc {
+	return func(context *gin.Context) {
+		statusCode, response := repository.UpdateProfile(context)
+		context.IndentedJSON(statusCode, response)
+	}
 }

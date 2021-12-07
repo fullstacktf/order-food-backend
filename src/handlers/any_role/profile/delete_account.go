@@ -1,4 +1,4 @@
-package product_handler
+package profile_handler
 
 import (
 	repository "comiditapp/api/database/repositories/users"
@@ -6,9 +6,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func UpdateProduct(repository *repository.MongoUsersRepository) gin.HandlerFunc {
+func DeleteAccount(repository *repository.MongoUsersRepository) gin.HandlerFunc {
 	return func(context *gin.Context) {
-		statusCode, response := repository.UpdateProduct(context)
+		statusCode, response := repository.DeleteAccount(context)
 		context.IndentedJSON(statusCode, response)
 	}
 }

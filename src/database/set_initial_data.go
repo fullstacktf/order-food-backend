@@ -51,9 +51,9 @@ func SetInitialData(db DB) {
 
 	// INSERCIONES EN LA BBDD
 
-	insertMany(interfaceClients, db.Collections["user"])
-	insertMany(interfaceRestaurants, db.Collections["user"])
-	insertMany(interfaceOrders, db.Collections["order"])
+	insertMany(interfaceClients, db.Collections["users"])
+	insertMany(interfaceRestaurants, db.Collections["users"])
+	insertMany(interfaceOrders, db.Collections["orders"])
 }
 
 func insertMany(interfaceSlice []interface{}, collection *mongo.Collection) {

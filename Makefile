@@ -1,11 +1,7 @@
 .DEFAULT_GOAL := build
 
-server-debug: mongo
-	@echo "🍉 Starting server with debug mode..."
-	@docker-compose up app debug-app
-
 server: mongo
-	@echo "🍔 Starting server without debug mode..."
+	@echo "🍔 Starting server..."
 	@docker-compose up app
 
 mongo:

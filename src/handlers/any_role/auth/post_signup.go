@@ -1,11 +1,14 @@
 package auth_handler
 
 import (
-	"net/http"
+	repository "comiditapp/api/database/repositories/users"
 
 	"github.com/gin-gonic/gin"
 )
 
-func PostSignUp(c *gin.Context) {
-	c.String(http.StatusOK, "PostSignUp handler")
+func SignUpUser(repository *repository.MongoUsersRepository) gin.HandlerFunc {
+	return func(context *gin.Context) {
+		statusCode, response := repository.SignUpUser(context)
+		context.IndentedJSON(statusCode, response)
+	}
 }
