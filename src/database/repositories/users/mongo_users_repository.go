@@ -1,8 +1,10 @@
 package repository
 
 import (
+	"comiditapp/api/middlewares"
 	"comiditapp/api/models"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -49,12 +51,17 @@ func (r *MongoUsersRepository) SignUpUser(context *gin.Context) (statusCode int,
 	}
 
 	newId := primitive.NewObjectID()
+	newPassword, err := middlewares.HashPassword(newUser.HashedPassword)
+	if err != nil {
+		return http.StatusInternalServerError, err.Error()
+	}
+
 	user := &models.User{
 		Id:             newId,
 		Role:           newUser.Role,
 		Name:           newUser.Name,
 		Email:          newUser.Email,
-		HashedPassword: newUser.HashedPassword,
+		HashedPassword: newPassword,
 		Phone:          newUser.Phone,
 		Address:        newUser.Address,
 		Menu:           parsedMenu,
@@ -64,13 +71,68 @@ func (r *MongoUsersRepository) SignUpUser(context *gin.Context) (statusCode int,
 		return http.StatusBadRequest, err.Error()
 	}
 
+	// Tras crear el usuario se le genera un jwt y se setea en sus cookies
+	expirationTime := time.Now().Add(time.Hour * 8760)
+	token, err := middlewares.GenerateJWT(newUser.Email, newUser.Id.Hex(), string(newUser.Role), expirationTime.Unix())
+	if err != nil {
+		return http.StatusInternalServerError, err.Error()
+	}
+
+	http.SetCookie(context.Writer, &http.Cookie{
+		Name:    "token",
+		Value:   token,
+		Expires: expirationTime,
+	})
+
 	return http.StatusCreated, newId.Hex()
 }
 
-// TODO: Implement JWT auth
 // POST - http://localhost:3000/auth/signin
 func (r *MongoUsersRepository) SignInUser(context *gin.Context) (statusCode int, response interface{}) {
-	return 0, &models.User{}
+
+	var u models.User
+	var dbUser models.User
+
+	context.BindJSON(&u)
+
+	filter := bson.M{"email": u.Email}
+	if err := r.users.FindOne(context, filter).Decode(&dbUser); err != nil {
+		return http.StatusNotFound, err.Error()
+	}
+
+	// Bcrypt se encarga de hashear la del user y compararla con la de db
+	if err := middlewares.VerifyPassword(u.HashedPassword, dbUser.HashedPassword); err != nil {
+		return http.StatusUnauthorized, "Login failed, username or password are incorrect"
+	}
+
+	expirationTime := time.Now().Add(time.Hour * 8760)
+	token, err := middlewares.GenerateJWT(dbUser.Email, dbUser.Id.Hex(), string(dbUser.Role), expirationTime.Unix())
+	if err != nil {
+		return http.StatusInternalServerError, err.Error()
+	}
+
+	c := &http.Cookie{
+		Name:    "token",
+		Value:   token,
+		Path:    "/",
+		Expires: expirationTime,
+	}
+	http.SetCookie(context.Writer, c)
+
+	return http.StatusOK, token
+}
+
+// POST - http://localhost:3000/auth/signOutUser
+func (r *MongoUsersRepository) SignOutUser(context *gin.Context) (statusCode int, response interface{}) {
+	c := &http.Cookie{
+		Name:    "token",
+		Value:   "",
+		Path:    "/",
+		Expires: time.Unix(0, 0),
+	}
+
+	http.SetCookie(context.Writer, c)
+	return http.StatusOK, gin.H{"message": "Successfully logged out"}
 }
 
 // GET - http://localhost:3000/restaurants
