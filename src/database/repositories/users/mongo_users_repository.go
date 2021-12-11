@@ -3,9 +3,11 @@ package repository
 import (
 	"comiditapp/api/middlewares"
 	"comiditapp/api/models"
+	"fmt"
 	"net/http"
 	"time"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"go.mongodb.org/mongo-driver/bson"
@@ -24,8 +26,6 @@ func NewMongoUsersRepository(db *mongo.Database) *MongoUsersRepository {
 // any_role methods
 
 // POST - http://localhost:3000/auth/signup
-// Actualmente crea correctamente un usuario.
-// Deberia encargarse tambien de generar el JSON web token
 func (r *MongoUsersRepository) SignUpUser(context *gin.Context) (statusCode int, response interface{}) {
 	var validate *validator.Validate = validator.New()
 	var newUser models.User
@@ -78,11 +78,13 @@ func (r *MongoUsersRepository) SignUpUser(context *gin.Context) (statusCode int,
 		return http.StatusInternalServerError, err.Error()
 	}
 
-	http.SetCookie(context.Writer, &http.Cookie{
+	c := &http.Cookie{
 		Name:    "token",
 		Value:   token,
 		Expires: expirationTime,
-	})
+	}
+	http.SetCookie(context.Writer, c)
+	context.Request.Header.Add("Set-Cookie", c.String())
 
 	return http.StatusCreated, newId.Hex()
 }
@@ -118,6 +120,7 @@ func (r *MongoUsersRepository) SignInUser(context *gin.Context) (statusCode int,
 		Expires: expirationTime,
 	}
 	http.SetCookie(context.Writer, c)
+	context.Request.Header.Add("Set-Cookie", c.String())
 
 	return http.StatusOK, token
 }
@@ -132,6 +135,8 @@ func (r *MongoUsersRepository) SignOutUser(context *gin.Context) (statusCode int
 	}
 
 	http.SetCookie(context.Writer, c)
+	context.Request.Header.Del("Set-Cookie")
+
 	return http.StatusOK, gin.H{"message": "Successfully logged out"}
 }
 
@@ -228,8 +233,21 @@ func (r *MongoUsersRepository) UpdateProfile(context *gin.Context) (statusCode i
 
 	context.BindJSON(&newUser)
 
-	err := validate.Struct(newUser)
+	c, err := context.Cookie("token")
 	if err != nil {
+		return http.StatusUnauthorized, "Not enough permissions"
+	}
+
+	// Checking permissions
+	t, _ := jwt.Parse(c, nil)
+	encodedId := t.Claims.(jwt.MapClaims)["id"]
+	requesterId := fmt.Sprintf("%v", encodedId)
+
+	if requesterId != context.Param("id") {
+		return http.StatusUnauthorized, "Not enough permissions"
+	}
+
+	if err := validate.Struct(newUser); err != nil {
 		validatorError := err.(validator.ValidationErrors).Error()
 		errorMessage := "Cannot update user, required fields not provided\n" + validatorError
 		return http.StatusBadRequest, errorMessage
