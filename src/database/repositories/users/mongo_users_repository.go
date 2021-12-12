@@ -39,6 +39,14 @@ func (r *MongoUsersRepository) SignUpUser(context *gin.Context) (statusCode int,
 		return http.StatusBadRequest, errorMessage
 	}
 
+	// check if exists any user with same email, cause emails must be unique
+	var result bson.M
+
+	filter := bson.M{"email": newUser.Email}
+	if err := r.users.FindOne(context, filter).Decode(&result); err == nil {
+		return http.StatusBadRequest, "That email is already registered"
+	}
+
 	parsedMenu := []models.Product{}
 	for _, product := range newUser.Menu {
 		newProduct := models.Product{
@@ -71,7 +79,6 @@ func (r *MongoUsersRepository) SignUpUser(context *gin.Context) (statusCode int,
 		return http.StatusBadRequest, err.Error()
 	}
 
-	// Tras crear el usuario se le genera un jwt y se setea en sus cookies
 	expirationTime := time.Now().Add(time.Hour * 8760)
 	token, err := middlewares.GenerateJWT(newUser.Email, newUser.Id.Hex(), string(newUser.Role), expirationTime.Unix())
 	if err != nil {
@@ -104,7 +111,7 @@ func (r *MongoUsersRepository) SignInUser(context *gin.Context) (statusCode int,
 
 	// Bcrypt se encarga de hashear la del user y compararla con la de db
 	if err := middlewares.VerifyPassword(u.HashedPassword, dbUser.HashedPassword); err != nil {
-		return http.StatusUnauthorized, "Login failed, username or password are incorrect"
+		return http.StatusUnauthorized, "Login failed, username or password are incorrect " + u.HashedPassword + " " + dbUser.HashedPassword
 	}
 
 	expirationTime := time.Now().Add(time.Hour * 8760)
@@ -233,12 +240,12 @@ func (r *MongoUsersRepository) UpdateProfile(context *gin.Context) (statusCode i
 
 	context.BindJSON(&newUser)
 
+	// Checking permissions
 	c, err := context.Cookie("token")
 	if err != nil {
 		return http.StatusUnauthorized, "Not enough permissions"
 	}
 
-	// Checking permissions
 	t, _ := jwt.Parse(c, nil)
 	encodedId := t.Claims.(jwt.MapClaims)["id"]
 	requesterId := fmt.Sprintf("%v", encodedId)
@@ -289,26 +296,66 @@ func (r *MongoUsersRepository) DeleteAccount(context *gin.Context) (statusCode i
 	id, err := primitive.ObjectIDFromHex(context.Param("id"))
 	if err != nil {
 		errorMessage := "Bad request, " + context.Param("id") + " is not a valid ID"
-		return http.StatusBadRequest, errorMessage
+		return http.StatusBadRequest, gin.H{"error": errorMessage}
+	}
+
+	// Checking permissions
+	c, err := context.Cookie("token")
+	if err != nil {
+		return http.StatusUnauthorized, gin.H{"error": "Not enough permissions"}
+	}
+
+	t, _ := jwt.Parse(c, nil)
+	encodedId := t.Claims.(jwt.MapClaims)["id"]
+	requesterId := fmt.Sprintf("%v", encodedId)
+
+	if requesterId != context.Param("id") {
+		return http.StatusUnauthorized, gin.H{"error": "Not enough permissions"}
 	}
 
 	filter := bson.M{"id": bson.M{"$eq": id}}
 	result := r.users.FindOneAndDelete(context, filter)
 	if result.Err() != nil {
-		return http.StatusBadRequest, result.Err().Error()
+		return http.StatusBadRequest, gin.H{"error": result.Err().Error()}
 	}
 
 	return http.StatusOK, id.Hex()
 }
 
 // restaurant_role methods
-// Para estos necesitamos comprobar que el restaurante tiene permisos y sacar su id de la sesion para poder efectuar las acciones
+// GET - http://localhost:3000/products
 func (r *MongoUsersRepository) FindProducts(context *gin.Context) (statusCode int, response interface{}) {
-	return 0, &[]models.Product{}
+	var restaurant models.User
+
+	// Checking permissions
+	c, err := context.Cookie("token")
+	if err != nil {
+		return http.StatusInternalServerError, gin.H{"error": "Not logged in"}
+	}
+
+	t, _ := jwt.Parse(c, nil)
+	encodedId := t.Claims.(jwt.MapClaims)["id"]
+	requesterId := fmt.Sprintf("%v", encodedId)
+
+	id, err := primitive.ObjectIDFromHex(requesterId)
+	if err != nil {
+		return http.StatusInternalServerError, gin.H{"error": "Not enough permissions"}
+	}
+
+	filter := bson.M{"role": "restaurant", "id": id}
+	if err := r.users.FindOne(context, filter).Decode(&restaurant); err != nil {
+		return http.StatusNotFound, gin.H{"error": "Restaurant not found"}
+	}
+
+	products := restaurant.Menu
+
+	return http.StatusOK, products
 }
+
 func (r *MongoUsersRepository) CreateProduct(context *gin.Context) (statusCode int, response interface{}) {
 	return 0, &models.Product{}
 }
+
 func (r *MongoUsersRepository) UpdateProduct(context *gin.Context) (statusCode int, response interface{}) {
 	return 0, &models.Product{}
 }
