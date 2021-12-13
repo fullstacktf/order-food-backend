@@ -88,6 +88,7 @@ func (r *MongoUsersRepository) SignUpUser(context *gin.Context) (statusCode int,
 	c := &http.Cookie{
 		Name:    "token",
 		Value:   token,
+		Path:    "/",
 		Expires: expirationTime,
 	}
 	http.SetCookie(context.Writer, c)
@@ -109,9 +110,12 @@ func (r *MongoUsersRepository) SignInUser(context *gin.Context) (statusCode int,
 		return http.StatusNotFound, err.Error()
 	}
 
+	if isEqual := (u.Email == dbUser.Email); isEqual != true {
+		return http.StatusUnauthorized, "Login failed, email or password are incorrect "
+	}
 	// Bcrypt se encarga de hashear la del user y compararla con la de db
 	if err := middlewares.VerifyPassword(u.HashedPassword, dbUser.HashedPassword); err != nil {
-		return http.StatusUnauthorized, "Login failed, username or password are incorrect " + u.HashedPassword + " " + dbUser.HashedPassword
+		return http.StatusUnauthorized, "Login failed, email or password are incorrect "
 	}
 
 	expirationTime := time.Now().Add(time.Hour * 8760)
@@ -352,10 +356,129 @@ func (r *MongoUsersRepository) FindProducts(context *gin.Context) (statusCode in
 	return http.StatusOK, products
 }
 
+// POST - http://localhost:3000/products
 func (r *MongoUsersRepository) CreateProduct(context *gin.Context) (statusCode int, response interface{}) {
-	return 0, &models.Product{}
+	var prod models.Product
+
+	context.BindJSON(&prod)
+
+	// Checking permissions
+	c, err := context.Cookie("token")
+	if err != nil {
+		return http.StatusUnauthorized, "Not enough permissions"
+	}
+
+	t, _ := jwt.Parse(c, nil)
+	encodedId := t.Claims.(jwt.MapClaims)["id"]
+	requesterId := fmt.Sprintf("%v", encodedId)
+
+	var validate *validator.Validate = validator.New()
+	if err := validate.Struct(prod); err != nil {
+		validatorError := err.(validator.ValidationErrors).Error()
+		errorMessage := "Cannot create product, required fields not provided\n" + validatorError
+		return http.StatusBadRequest, gin.H{"error": errorMessage}
+	}
+
+	newProduct := &models.Product{
+		Id:       primitive.NewObjectID(),
+		Category: prod.Category,
+		Name:     prod.Name,
+		Price:    prod.Price,
+	}
+
+	var restaurant models.User
+
+	id, err := primitive.ObjectIDFromHex(requesterId)
+	if err != nil {
+		errorMessage := "Bad request, " + requesterId + " is not a valid ID"
+		return http.StatusBadRequest, errorMessage
+	}
+
+	filterFind := bson.M{"role": "restaurant", "id": id}
+	if err := r.users.FindOne(context, filterFind).Decode(&restaurant); err != nil {
+		return http.StatusNotFound, gin.H{"error": "Restaurant not found"}
+	}
+
+	restaurant.Menu = append(restaurant.Menu, *newProduct)
+
+	filter := bson.M{"id": bson.M{"$eq": restaurant.Id}}
+	update := bson.M{
+		"$set": bson.M{"menu": restaurant.Menu},
+	}
+
+	updateResult, err := r.users.UpdateOne(context, filter, update)
+	if err != nil {
+		return http.StatusBadRequest, gin.H{"error": err.Error()}
+	}
+
+	return http.StatusOK, gin.H{"success": updateResult}
 }
 
+// PUT - http://localhost:3000/products/:id
 func (r *MongoUsersRepository) UpdateProduct(context *gin.Context) (statusCode int, response interface{}) {
-	return 0, &models.Product{}
+	var prod models.Product
+
+	context.BindJSON(&prod)
+
+	// Checking permissions
+	c, err := context.Cookie("token")
+	if err != nil {
+		return http.StatusUnauthorized, "Not enough permissions"
+	}
+
+	t, _ := jwt.Parse(c, nil)
+	encodedId := t.Claims.(jwt.MapClaims)["id"]
+	requesterId := fmt.Sprintf("%v", encodedId)
+
+	var validate *validator.Validate = validator.New()
+	if err := validate.Struct(prod); err != nil {
+		validatorError := err.(validator.ValidationErrors).Error()
+		errorMessage := "Cannot update product, required fields not provided\n" + validatorError
+		return http.StatusBadRequest, gin.H{"error": errorMessage}
+	}
+
+	prodId, err := primitive.ObjectIDFromHex(context.Param("id"))
+	if err != nil {
+		errorMessage := "Bad request, " + context.Param("id") + " is not a valid ID"
+		return http.StatusBadRequest, gin.H{"error": errorMessage}
+	}
+
+	newProduct := &models.Product{
+		Id:       prodId,
+		Category: prod.Category,
+		Name:     prod.Name,
+		Price:    prod.Price,
+	}
+
+	var restaurant models.User
+
+	id, err := primitive.ObjectIDFromHex(requesterId)
+	if err != nil {
+		errorMessage := "Bad request, " + requesterId + " is not a valid ID"
+		return http.StatusBadRequest, errorMessage
+	}
+
+	filterFind := bson.M{"role": "restaurant", "id": id}
+	if err := r.users.FindOne(context, filterFind).Decode(&restaurant); err != nil {
+		return http.StatusNotFound, gin.H{"error": "Restaurant not found"}
+	}
+
+	// update of the specific product
+	for i, product := range restaurant.Menu {
+		if product.Id == prodId {
+			restaurant.Menu[i] = *newProduct
+			break
+		}
+	}
+
+	filter := bson.M{"id": bson.M{"$eq": restaurant.Id}}
+	update := bson.M{
+		"$set": bson.M{"menu": restaurant.Menu},
+	}
+
+	if _, err := r.users.UpdateOne(context, filter, update); err != nil {
+		return http.StatusBadRequest, gin.H{"error": err.Error()}
+	}
+
+	return http.StatusOK, gin.H{"success": "Restaurant " + restaurant.Id.Hex() + " updated"}
 }
