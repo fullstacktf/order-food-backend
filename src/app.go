@@ -10,10 +10,9 @@ import (
 	"comiditapp/api/controllers/restaurant_role/products"
 	"comiditapp/api/database"
 	"comiditapp/api/env"
+	"comiditapp/api/middlewares"
 	"log"
-	"time"
 
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -26,17 +25,18 @@ func main() {
 	//database.SetInitialData(db)
 
 	r := gin.Default()
-	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:8080"},
-		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
-		AllowHeaders:     []string{"Origin"},
-		ExposeHeaders:    []string{"Content-Length"},
-		AllowCredentials: true,
-		AllowOriginFunc: func(origin string) bool {
-			return origin == "http://localhost:8080"
-		},
-		MaxAge: 12 * time.Hour,
-	}))
+	r.Use(middlewares.CORSMiddleware())
+	// r.Use(cors.New(cors.Config{
+	// 	AllowOrigins:     []string{"http://localhost:8080"},
+	// 	AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
+	// 	AllowHeaders:     []string{"Origin"},
+	// 	ExposeHeaders:    []string{"Content-Length"},
+	// 	AllowCredentials: true,
+	// 	AllowOriginFunc: func(origin string) bool {
+	// 		return origin == "http://localhost:8080"
+	// 	},
+	// 	MaxAge: 12 * time.Hour,
+	// }))
 
 	// any role users
 	home.Routes(r)

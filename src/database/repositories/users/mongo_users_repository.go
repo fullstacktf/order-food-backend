@@ -27,7 +27,6 @@ func NewMongoUsersRepository(db *mongo.Database) *MongoUsersRepository {
 
 // POST - http://localhost:3000/auth/signup
 func (r *MongoUsersRepository) SignUpUser(context *gin.Context) (statusCode int, response interface{}) {
-	context.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 	var validate *validator.Validate = validator.New()
 	var newUser models.User
 
