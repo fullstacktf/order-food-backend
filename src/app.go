@@ -12,6 +12,7 @@ import (
 	"comiditapp/api/env"
 	"log"
 
+	"github.com/gin-gonic/contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -24,6 +25,7 @@ func main() {
 	//database.SetInitialData(db)
 
 	r := gin.Default()
+	r.Use(cors.Default())
 
 	// any role users
 	home.Routes(r)

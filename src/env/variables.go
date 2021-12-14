@@ -10,6 +10,7 @@ import (
 var MONGODB_URI string
 var DB_NAME string
 var PORT string
+var SECRET string
 
 func LoadEnv() {
 
@@ -24,6 +25,7 @@ func LoadEnv() {
 	MONGODB_URI = os.Getenv("MONGODB_URI")
 	DB_NAME = os.Getenv("DB_NAME")
 	PORT = os.Getenv("PORT")
+	SECRET = os.Getenv("SECRET")
 
 	println("Loaded environment variables succesfully ✅")
 }
