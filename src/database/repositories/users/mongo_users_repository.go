@@ -3,6 +3,7 @@ package repository
 import (
 	"comiditapp/api/middlewares"
 	"comiditapp/api/models"
+	"comiditapp/api/services"
 	"fmt"
 	"net/http"
 	"time"
@@ -80,7 +81,7 @@ func (r *MongoUsersRepository) SignUpUser(context *gin.Context) (statusCode int,
 	}
 
 	expirationTime := time.Now().Add(time.Hour * 8760)
-	token, err := middlewares.GenerateJWT(newUser.Email, newUser.Id.Hex(), string(newUser.Role), expirationTime.Unix())
+	token, err := services.GenerateJWT(newUser.Email, newUser.Id.Hex(), string(newUser.Role), expirationTime.Unix())
 	if err != nil {
 		return http.StatusInternalServerError, err.Error()
 	}
@@ -119,7 +120,7 @@ func (r *MongoUsersRepository) SignInUser(context *gin.Context) (statusCode int,
 	}
 
 	expirationTime := time.Now().Add(time.Hour * 8760)
-	token, err := middlewares.GenerateJWT(dbUser.Email, dbUser.Id.Hex(), string(dbUser.Role), expirationTime.Unix())
+	token, err := services.GenerateJWT(dbUser.Email, dbUser.Id.Hex(), string(dbUser.Role), expirationTime.Unix())
 	if err != nil {
 		return http.StatusInternalServerError, err.Error()
 	}
