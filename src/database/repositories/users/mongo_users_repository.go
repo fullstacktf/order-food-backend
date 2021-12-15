@@ -4,6 +4,7 @@ import (
 	"comiditapp/api/middlewares"
 	"comiditapp/api/models"
 	"comiditapp/api/services"
+	"context"
 	"fmt"
 	"net/http"
 	"time"
@@ -25,77 +26,24 @@ func NewMongoUsersRepository(db *mongo.Database) *MongoUsersRepository {
 }
 
 // any_role methods
-
-// POST - http://localhost:3000/auth/signup
-func (r *MongoUsersRepository) SignUpUser(context *gin.Context) (statusCode int, response interface{}) {
-	var validate *validator.Validate = validator.New()
-	var newUser models.User
-
-	context.BindJSON(&newUser)
-
-	err := validate.Struct(newUser)
-	if err != nil {
-		validatorError := err.(validator.ValidationErrors).Error()
-		errorMessage := "Cannot create user, required fields not provided\n" + validatorError
-		return http.StatusBadRequest, errorMessage
-	}
-
+func (r *MongoUsersRepository) DoesUserExists(u models.User) bool {
 	// check if exists any user with same email, cause emails must be unique
 	var result bson.M
 
-	filter := bson.M{"email": newUser.Email}
-	if err := r.users.FindOne(context, filter).Decode(&result); err == nil {
-		return http.StatusBadRequest, "That email is already registered"
+	filter := bson.M{"email": u.Email}
+	if err := r.users.FindOne(context.TODO(), filter).Decode(&result); err == nil {
+		return true
 	}
+	return false
+}
 
-	parsedMenu := []models.Product{}
-	for _, product := range newUser.Menu {
-		newProduct := models.Product{
-			Id:       primitive.NewObjectID(),
-			Category: product.Category,
-			Name:     product.Name,
-			Price:    product.Price,
-		}
-		parsedMenu = append(parsedMenu, newProduct)
-	}
-
-	newId := primitive.NewObjectID()
-	newPassword, err := middlewares.HashPassword(newUser.Password)
+// POST - http://localhost:3000/auth/signup
+func (r *MongoUsersRepository) SignUpUser(user models.User) error {
+	_, err := r.users.InsertOne(context.TODO(), user)
 	if err != nil {
-		return http.StatusInternalServerError, err.Error()
+		return err
 	}
-
-	user := &models.User{
-		Id:       newId,
-		Role:     newUser.Role,
-		Name:     newUser.Name,
-		Email:    newUser.Email,
-		Password: newPassword,
-		Phone:    newUser.Phone,
-		Address:  newUser.Address,
-		Menu:     parsedMenu,
-	}
-
-	if _, err := r.users.InsertOne(context, user); err != nil {
-		return http.StatusBadRequest, err.Error()
-	}
-
-	expirationTime := time.Now().Add(time.Hour * 8760)
-	token, err := services.GenerateJWT(newUser.Email, newUser.Id.Hex(), string(newUser.Role), expirationTime.Unix())
-	if err != nil {
-		return http.StatusInternalServerError, err.Error()
-	}
-
-	c := &http.Cookie{
-		Name:    "token",
-		Value:   token,
-		Path:    "/",
-		Expires: expirationTime,
-	}
-	http.SetCookie(context.Writer, c)
-	context.Request.Header.Add("Set-Cookie", c.String())
-
-	return http.StatusCreated, newId.Hex()
+	return nil
 }
 
 // POST - http://localhost:3000/auth/signin
@@ -240,7 +188,7 @@ func (r *MongoUsersRepository) GetRestaurantProducts(context *gin.Context) (stat
 
 // PUT - http://localhost:3000/profile/:id
 func (r *MongoUsersRepository) UpdateProfile(context *gin.Context) (statusCode int, response interface{}) {
-	var validate *validator.Validate = validator.New()
+	validate := validator.New()
 	var newUser models.User
 
 	context.BindJSON(&newUser)
@@ -373,7 +321,7 @@ func (r *MongoUsersRepository) CreateProduct(context *gin.Context) (statusCode i
 	encodedId := t.Claims.(jwt.MapClaims)["id"]
 	requesterId := fmt.Sprintf("%v", encodedId)
 
-	var validate *validator.Validate = validator.New()
+	validate := validator.New()
 	if err := validate.Struct(prod); err != nil {
 		validatorError := err.(validator.ValidationErrors).Error()
 		errorMessage := "Cannot create product, required fields not provided\n" + validatorError
@@ -431,7 +379,7 @@ func (r *MongoUsersRepository) UpdateProduct(context *gin.Context) (statusCode i
 	encodedId := t.Claims.(jwt.MapClaims)["id"]
 	requesterId := fmt.Sprintf("%v", encodedId)
 
-	var validate *validator.Validate = validator.New()
+	validate := validator.New()
 	if err := validate.Struct(prod); err != nil {
 		validatorError := err.(validator.ValidationErrors).Error()
 		errorMessage := "Cannot update product, required fields not provided\n" + validatorError

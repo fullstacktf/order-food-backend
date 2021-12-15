@@ -106,7 +106,7 @@ func (r *MongoOrdersRepository) CreateOrder(context *gin.Context) (statusCode in
 		return http.StatusUnauthorized, gin.H{"error": "Not enough permissions"}
 	}
 
-	var validate *validator.Validate = validator.New()
+	validate := validator.New()
 	var newOrder dtos.OrderCreate
 
 	context.BindJSON(&newOrder)
@@ -165,7 +165,7 @@ func (r *MongoOrdersRepository) UpdateClientOrder(context *gin.Context) (statusC
 		return http.StatusUnauthorized, gin.H{"error": "Not enough permissions"}
 	}
 
-	var validate *validator.Validate = validator.New()
+	validate := validator.New()
 	var newOrder dtos.OrderUpdate
 
 	context.BindJSON(&newOrder)

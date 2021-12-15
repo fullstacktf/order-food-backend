@@ -34,7 +34,7 @@ type MockedUsersRepository struct {
 // any role
 func (r *MockedUsersRepository) SignUpUser(context *gin.Context) models.User {
 
-	var validate *validator.Validate = validator.New()
+	validate := validator.New()
 	var newUser models.User
 
 	json.NewDecoder(context.Request.Body).Decode(&newUser)
@@ -63,7 +63,7 @@ func (r *MockedUsersRepository) SignInUser(context *gin.Context) models.User {
 
 func (r *MockedUsersRepository) UpdateProfile(context *gin.Context) models.User {
 
-	var validate *validator.Validate = validator.New()
+	validate := validator.New()
 	var newUserProfile models.User
 
 	// this line should get the id from user session
