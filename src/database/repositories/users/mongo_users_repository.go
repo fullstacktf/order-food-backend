@@ -59,20 +59,20 @@ func (r *MongoUsersRepository) SignUpUser(context *gin.Context) (statusCode int,
 	}
 
 	newId := primitive.NewObjectID()
-	newPassword, err := middlewares.HashPassword(newUser.HashedPassword)
+	newPassword, err := middlewares.HashPassword(newUser.Password)
 	if err != nil {
 		return http.StatusInternalServerError, err.Error()
 	}
 
 	user := &models.User{
-		Id:             newId,
-		Role:           newUser.Role,
-		Name:           newUser.Name,
-		Email:          newUser.Email,
-		HashedPassword: newPassword,
-		Phone:          newUser.Phone,
-		Address:        newUser.Address,
-		Menu:           parsedMenu,
+		Id:       newId,
+		Role:     newUser.Role,
+		Name:     newUser.Name,
+		Email:    newUser.Email,
+		Password: newPassword,
+		Phone:    newUser.Phone,
+		Address:  newUser.Address,
+		Menu:     parsedMenu,
 	}
 
 	if _, err := r.users.InsertOne(context, user); err != nil {
@@ -114,7 +114,7 @@ func (r *MongoUsersRepository) SignInUser(context *gin.Context) (statusCode int,
 		return http.StatusUnauthorized, "Login failed, email or password are incorrect "
 	}
 	// Bcrypt se encarga de hashear la del user y compararla con la de db
-	if err := middlewares.VerifyPassword(u.HashedPassword, dbUser.HashedPassword); err != nil {
+	if err := middlewares.VerifyPassword(u.Password, dbUser.Password); err != nil {
 		return http.StatusUnauthorized, "Login failed, email or password are incorrect "
 	}
 
@@ -284,7 +284,7 @@ func (r *MongoUsersRepository) UpdateProfile(context *gin.Context) (statusCode i
 	filter := bson.M{"id": bson.M{"$eq": id}}
 	update := bson.M{
 		"$set": bson.M{"role": newUser.Role, "name": newUser.Name, "email": newUser.Email,
-			"hashedPassword": newUser.HashedPassword, "phone": newUser.Phone,
+			"password": newUser.Password, "phone": newUser.Phone,
 			"address": newUser.Address, "menu": parsedMenu},
 	}
 

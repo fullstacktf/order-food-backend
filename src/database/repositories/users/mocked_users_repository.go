@@ -19,11 +19,11 @@ var id3 = primitive.NewObjectID()
 var id4 = primitive.NewObjectID()
 
 var users []models.User = []models.User{
-	{Id: id1, Role: enums.Client, Name: "Francisco Díaz", Email: "franDiaz@yahoo.es", HashedPassword: "MichaelHighFives", Phone: 111111111, Address: []models.Address{{Street: "Calle Roquefort 32", ZipCode: 11111, Country: "España", City: "Las Palmas de Gran Canaria"}}},
-	{Id: id2, Role: enums.Client, Name: "María Fernández", Email: "mery-mail@hotmail.com", HashedPassword: "BrooklynDisguises", Phone: 222222222, Address: []models.Address{{Street: "Calle Benito 41", ZipCode: 22222, Country: "España", City: "Córdoba"}}},
-	{Id: id3, Role: enums.Restaurant, Name: "Cafetería Mortadelo", Email: "cafeteriamortadelo@hotmail.es", HashedPassword: "HappyChickens", Phone: 111111111, Address: []models.Address{{Street: "Avenida de los Majuelos 117", ZipCode: 11111, Country: "España", City: "Santa Cruz de Tenerife"}},
+	{Id: id1, Role: enums.Client, Name: "Francisco Díaz", Email: "franDiaz@yahoo.es", Password: "MichaelHighFives", Phone: 111111111, Address: []models.Address{{Street: "Calle Roquefort 32", ZipCode: 11111, Country: "España", City: "Las Palmas de Gran Canaria"}}},
+	{Id: id2, Role: enums.Client, Name: "María Fernández", Email: "mery-mail@hotmail.com", Password: "BrooklynDisguises", Phone: 222222222, Address: []models.Address{{Street: "Calle Benito 41", ZipCode: 22222, Country: "España", City: "Córdoba"}}},
+	{Id: id3, Role: enums.Restaurant, Name: "Cafetería Mortadelo", Email: "cafeteriamortadelo@hotmail.es", Password: "HappyChickens", Phone: 111111111, Address: []models.Address{{Street: "Avenida de los Majuelos 117", ZipCode: 11111, Country: "España", City: "Santa Cruz de Tenerife"}},
 		Menu: []models.Product{{Id: primitive.NewObjectID(), Category: "mainCourse", Name: "Bocadillo Clásico Embutidos", Price: 1.40}, {Id: primitive.NewObjectID(), Category: "mainCourse", Name: "Perrito Especial Mexicano", Price: 3.00}, {Id: primitive.NewObjectID(), Category: "appetizer", Name: "Ensaladilla", Price: 4.20}}},
-	{Id: id4, Role: enums.Restaurant, Name: "Don Perrito", Email: "DonPerrito@hotmail.com", HashedPassword: "r,<C:RW(x+2xW}{~", Phone: 222222222, Address: []models.Address{{Street: "Calle Decano Consular Jesus Ramos González 18", ZipCode: 22222, Country: "España", City: "Santa Cruz de Tenerife"}},
+	{Id: id4, Role: enums.Restaurant, Name: "Don Perrito", Email: "DonPerrito@hotmail.com", Password: "r,<C:RW(x+2xW}{~", Phone: 222222222, Address: []models.Address{{Street: "Calle Decano Consular Jesus Ramos González 18", ZipCode: 22222, Country: "España", City: "Santa Cruz de Tenerife"}},
 		Menu: []models.Product{{Id: primitive.NewObjectID(), Category: "mainCourse", Name: "Ensalada Don Perrito", Price: 4.00}, {Id: primitive.NewObjectID(), Category: "mainCourse", Name: "Ensalada Vegetal", Price: 4.20}, {Id: primitive.NewObjectID(), Category: "drink", Name: "Cerveza Lata", Price: 1.60}}},
 }
 
