@@ -25,9 +25,7 @@ func SignUpUser(repository *repository.MongoUsersRepository) gin.HandlerFunc {
 
 		// check if user exists
 		if repository.DoesUserExists(user) == true {
-
 			services.SendResponse(context, services.Response{Status: http.StatusBadRequest, Error: []string{"That email is already registered"}})
-
 		} else {
 			var parsedMenu []models.Product = services.CreateMenu(user.Menu)
 			user.Menu = parsedMenu

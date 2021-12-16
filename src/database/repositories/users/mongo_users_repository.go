@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"comiditapp/api/dtos"
 	"comiditapp/api/middlewares"
 	"comiditapp/api/models"
 	"comiditapp/api/services"
@@ -25,7 +26,6 @@ func NewMongoUsersRepository(db *mongo.Database) *MongoUsersRepository {
 	return &MongoUsersRepository{users: db.Collection("users")}
 }
 
-// any_role methods
 func (r *MongoUsersRepository) DoesUserExists(u models.User) bool {
 	// check if exists any user with same email, cause emails must be unique
 	var result bson.M
@@ -49,7 +49,7 @@ func (r *MongoUsersRepository) SignUpUser(user models.User) error {
 // POST - http://localhost:3000/auth/signin
 func (r *MongoUsersRepository) SignInUser(context *gin.Context) (statusCode int, response interface{}) {
 
-	var u models.User
+	var u dtos.UserLogin
 	var dbUser models.User
 
 	context.BindJSON(&u)
