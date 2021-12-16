@@ -12,7 +12,7 @@ import (
 	"comiditapp/api/env"
 	"log"
 
-	"github.com/gin-gonic/contrib/cors"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
