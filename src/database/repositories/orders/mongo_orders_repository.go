@@ -106,7 +106,7 @@ func (r *MongoOrdersRepository) CreateOrder(context *gin.Context) (statusCode in
 		return http.StatusUnauthorized, gin.H{"error": "Not enough permissions"}
 	}
 
-	var validate *validator.Validate = validator.New()
+	validate := validator.New()
 	var newOrder dtos.OrderCreate
 
 	context.BindJSON(&newOrder)
@@ -123,30 +123,11 @@ func (r *MongoOrdersRepository) CreateOrder(context *gin.Context) (statusCode in
 		return http.StatusBadRequest, gin.H{"error": errorMessage}
 	}
 
-	// This logic should be done here, but im getting problems cause ill need to inject
-	// users repository too (calculating the total price in front its a bad thing)
-	// Maybe if we add functions that retrieve the data from the repositories that would help
+	var totalPrice float64 = 0.0
 
-	// var restaurant models.User
-
-	// filter := bson.M{"id": restaurantId}
-	// if err := db.Collections["users"].FindOne(context, filter).Decode(restaurant); err != nil {
-	// 	return http.StatusInternalServerError, gin.H{"error": "Internal server error"}
-	// }
-
-	// productPrices := []float64{}
-	// for _, menuProduct := range restaurant.Menu {
-	// 	for _, orderProduct := range newOrder.Products {
-	// 		if orderProduct.ProductId == menuProduct.Id {
-	// 			productPrices = append(productPrices, menuProduct.Price*float64(orderProduct.Quantity))
-	// 		}
-	// 	}
-	// }
-
-	// var totalPrice float64
-	// for _, price := range productPrices {
-	// 	totalPrice += price
-	// }
+	for _, orderProduct := range newOrder.Products {
+		totalPrice += orderProduct.Price * float64(orderProduct.Quantity)
+	}
 
 	id := primitive.NewObjectID()
 	order := &models.Order{
@@ -154,7 +135,7 @@ func (r *MongoOrdersRepository) CreateOrder(context *gin.Context) (statusCode in
 		ClientId:     clientId,
 		RestaurantId: restaurantId,
 		Status:       enums.Ordered,
-		TotalPrice:   newOrder.TotalPrice,
+		TotalPrice:   totalPrice,
 		Products:     newOrder.Products,
 	}
 
@@ -184,7 +165,7 @@ func (r *MongoOrdersRepository) UpdateClientOrder(context *gin.Context) (statusC
 		return http.StatusUnauthorized, gin.H{"error": "Not enough permissions"}
 	}
 
-	var validate *validator.Validate = validator.New()
+	validate := validator.New()
 	var newOrder dtos.OrderUpdate
 
 	context.BindJSON(&newOrder)

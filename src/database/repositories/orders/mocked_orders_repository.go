@@ -71,7 +71,7 @@ func (r *MockedOrdersRepository) GetOrderById(context *gin.Context) models.Order
 
 func (r *MockedOrdersRepository) CreateOrder(context *gin.Context) models.Order {
 
-	var validate *validator.Validate = validator.New()
+	validate := validator.New()
 	var newOrder models.Order
 
 	json.NewDecoder(context.Request.Body).Decode(&newOrder)
@@ -114,7 +114,7 @@ func (r *MockedOrdersRepository) UpdateClientOrder(context *gin.Context) models.
 		panic(err)
 	}
 
-	var validate *validator.Validate = validator.New()
+	validate := validator.New()
 	var newOrder models.Order
 
 	foundOrderIndex := -1
