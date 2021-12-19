@@ -6,9 +6,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SignInUser(repository *repository.MongoUsersRepository) gin.HandlerFunc {
+func Login(repository *repository.MongoUsersRepository) gin.HandlerFunc {
 	return func(context *gin.Context) {
-		statusCode, response := repository.SignInUser(context)
+		statusCode, response := repository.Login(context)
 		context.IndentedJSON(statusCode, response)
 
 	}

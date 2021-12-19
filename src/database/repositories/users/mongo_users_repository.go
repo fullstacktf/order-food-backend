@@ -8,7 +8,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"time"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
@@ -37,8 +36,23 @@ func (r *MongoUsersRepository) DoesUserExists(u models.User) bool {
 	return false
 }
 
-// POST - http://localhost:3000/auth/signup
-func (r *MongoUsersRepository) SignUpUser(user models.User) error {
+func (r *MongoUsersRepository) HavePermissions(u dtos.UpdateUser) bool {
+	var dbUser models.User
+
+	filter := bson.M{"email": u.Email}
+	if err := r.users.FindOne(context.TODO(), filter).Decode(&dbUser); err != nil {
+		return false
+	}
+
+	if err := middlewares.VerifyPassword(u.Pass, dbUser.Password); err != nil {
+		return false
+	}
+
+	return true
+}
+
+// POST - http://localhost:3000/auth/register
+func (r *MongoUsersRepository) Register(user models.User) error {
 	_, err := r.users.InsertOne(context.TODO(), user)
 	if err != nil {
 		return err
@@ -46,8 +60,8 @@ func (r *MongoUsersRepository) SignUpUser(user models.User) error {
 	return nil
 }
 
-// POST - http://localhost:3000/auth/signin
-func (r *MongoUsersRepository) SignInUser(context *gin.Context) (statusCode int, response interface{}) {
+// POST - http://localhost:3000/auth/login
+func (r *MongoUsersRepository) Login(context *gin.Context) (statusCode int, response interface{}) {
 
 	var u dtos.UserLogin
 	var dbUser models.User
@@ -67,35 +81,17 @@ func (r *MongoUsersRepository) SignInUser(context *gin.Context) (statusCode int,
 		return http.StatusUnauthorized, "Login failed, email or password are incorrect "
 	}
 
-	expirationTime := time.Now().Add(time.Hour * 8760)
-	token, err := services.GenerateJWT(dbUser.Email, dbUser.Id.Hex(), string(dbUser.Role), expirationTime.Unix())
+	token, err := services.SetUserCookie(context, dbUser)
 	if err != nil {
-		return http.StatusInternalServerError, err.Error()
+		return http.StatusInternalServerError, "Internal server error"
 	}
 
-	c := &http.Cookie{
-		Name:    "token",
-		Value:   token,
-		Path:    "/",
-		Expires: expirationTime,
-	}
-	http.SetCookie(context.Writer, c)
-	context.Request.Header.Add("Set-Cookie", c.String())
-
-	return http.StatusOK, token
+	return http.StatusOK, gin.H{"token": token, "user": services.UserToDomain(dbUser)}
 }
 
-// POST - http://localhost:3000/auth/signOutUser
-func (r *MongoUsersRepository) SignOutUser(context *gin.Context) (statusCode int, response interface{}) {
-	c := &http.Cookie{
-		Name:    "token",
-		Value:   "",
-		Path:    "/",
-		Expires: time.Unix(0, 0),
-	}
-
-	http.SetCookie(context.Writer, c)
-	context.Request.Header.Del("Set-Cookie")
+// POST - http://localhost:3000/auth/logout
+func (r *MongoUsersRepository) Logout(context *gin.Context) (statusCode int, response interface{}) {
+	services.UnsetUserCookie(context)
 
 	return http.StatusOK, gin.H{"message": "Successfully logged out"}
 }
@@ -189,7 +185,7 @@ func (r *MongoUsersRepository) GetRestaurantProducts(context *gin.Context) (stat
 // PUT - http://localhost:3000/profile/:id
 func (r *MongoUsersRepository) UpdateProfile(context *gin.Context) (statusCode int, response interface{}) {
 	validate := validator.New()
-	var newUser models.User
+	var newUser dtos.UpdateUser
 
 	context.BindJSON(&newUser)
 
@@ -213,6 +209,10 @@ func (r *MongoUsersRepository) UpdateProfile(context *gin.Context) (statusCode i
 		return http.StatusBadRequest, errorMessage
 	}
 
+	if permissions := r.HavePermissions(newUser); permissions != true {
+		return http.StatusUnauthorized, "Not enough permissions"
+	}
+
 	parsedMenu := []models.Product{}
 	for _, product := range newUser.Menu {
 		newProduct := models.Product{
@@ -223,6 +223,12 @@ func (r *MongoUsersRepository) UpdateProfile(context *gin.Context) (statusCode i
 		}
 		parsedMenu = append(parsedMenu, newProduct)
 	}
+	newUser.Menu = parsedMenu
+
+	password, err := middlewares.HashPassword(newUser.Password)
+	if err != nil {
+		return http.StatusInternalServerError, err
+	}
 
 	id, err := primitive.ObjectIDFromHex(context.Param("id"))
 	if err != nil {
@@ -230,18 +236,25 @@ func (r *MongoUsersRepository) UpdateProfile(context *gin.Context) (statusCode i
 		return http.StatusBadRequest, errorMessage
 	}
 
-	filter := bson.M{"id": bson.M{"$eq": id}}
+	filter := bson.M{"id": id}
 	update := bson.M{
-		"$set": bson.M{"role": newUser.Role, "name": newUser.Name, "email": newUser.Email,
-			"password": newUser.Password, "phone": newUser.Phone,
-			"address": newUser.Address, "menu": parsedMenu},
+		"$set": bson.M{"name": newUser.Name, "email": newUser.Email,
+			"password": password, "phone": newUser.Phone,
+			"address": newUser.Address, "menu": newUser.Menu},
 	}
 
 	if _, err := r.users.UpdateOne(context, filter, update); err != nil {
 		return http.StatusBadRequest, err.Error()
 	}
 
-	return http.StatusOK, id.Hex()
+	var updatedUser models.User
+
+	userFilter := bson.M{"id": id}
+	if err := r.users.FindOne(context, userFilter).Decode(&updatedUser); err != nil {
+		return http.StatusNotFound, err.Error()
+	}
+
+	return http.StatusOK, gin.H{"message": "Updated successfully", "user": services.UserToDomain(updatedUser)}
 }
 
 // DELETE - http://localhost:3000/profile/:id

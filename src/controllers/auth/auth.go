@@ -10,8 +10,8 @@ import (
 func Routes(r *gin.Engine, db database.DB) {
 	authGroup := r.Group("/auth")
 	{
-		authGroup.POST("/signup", handlers.SignUpUser(db.UsersRepository))
-		authGroup.POST("/signin", handlers.SignInUser(db.UsersRepository))
-		authGroup.POST("/signout", handlers.SignOutUser(db.UsersRepository))
+		authGroup.POST("/register", handlers.Register(db.UsersRepository))
+		authGroup.POST("/login", handlers.Login(db.UsersRepository))
+		authGroup.POST("/logout", handlers.Logout(db.UsersRepository))
 	}
 }

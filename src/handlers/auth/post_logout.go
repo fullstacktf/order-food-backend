@@ -6,9 +6,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SignOutUser(repository *repository.MongoUsersRepository) gin.HandlerFunc {
+func Logout(repository *repository.MongoUsersRepository) gin.HandlerFunc {
 	return func(context *gin.Context) {
-		statusCode, response := repository.SignOutUser(context)
+		statusCode, response := repository.Logout(context)
 		context.IndentedJSON(statusCode, response)
 	}
 }

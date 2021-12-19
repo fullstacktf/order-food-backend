@@ -10,7 +10,7 @@ import (
 	"github.com/go-playground/validator"
 )
 
-func SignUpUser(repository *repository.MongoUsersRepository) gin.HandlerFunc {
+func Register(repository *repository.MongoUsersRepository) gin.HandlerFunc {
 	return func(context *gin.Context) {
 		var user models.User
 		context.BindJSON(&user)
@@ -35,15 +35,16 @@ func SignUpUser(repository *repository.MongoUsersRepository) gin.HandlerFunc {
 				services.SendResponse(context, services.Response{Status: http.StatusInternalServerError, Error: []string{"Internal error on register"}})
 			}
 
-			if err := repository.SignUpUser(*newUser); err != nil {
+			if err := repository.Register(*newUser); err != nil {
 				services.SendResponse(context, services.Response{Status: http.StatusInternalServerError, Error: []string{"Internal error on register"}})
 			}
 
-			if err := services.SetUserCookie(context, *newUser); err != nil {
+			token, err := services.SetUserCookie(context, *newUser)
+			if err != nil {
 				services.SendResponse(context, services.Response{Status: http.StatusInternalServerError, Error: []string{"Internal error on register"}})
 			}
 
-			services.SendResponse(context, services.Response{Status: http.StatusCreated, Message: []string{"User created with id" + newUser.Id.Hex()}})
+			services.SendResponse(context, services.Response{Status: http.StatusCreated, Data: map[string]interface{}{"user": services.UserToDomain((*newUser)), "token": token}})
 		}
 	}
 }
