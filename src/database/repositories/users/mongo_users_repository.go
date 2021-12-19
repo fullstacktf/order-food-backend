@@ -8,7 +8,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"time"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
@@ -108,27 +107,6 @@ func (r *MongoUsersRepository) FindRestaurants(context *gin.Context) (statusCode
 	if err := foundRestaurants.All(context, &restaurants); err != nil {
 		return http.StatusConflict, err.Error()
 	}
-
-	expirationTime := time.Now().Add(time.Hour * 8760)
-	token, err := services.GenerateJWT(restaurants[0].Email, restaurants[0].Id.Hex(), string(restaurants[0].Role), expirationTime.Unix())
-	if err != nil {
-		return http.StatusInternalServerError, err.Error()
-	}
-
-	c := &http.Cookie{
-		Name:     "token",
-		Value:    token,
-		Path:     "/",
-		Expires:  expirationTime,
-		SameSite: http.SameSiteLaxMode,
-		Secure:   true,
-	}
-
-	// Con esta cookie ya podemos limitar las acciones segun quien tenga cookie o no
-	http.SetCookie(context.Writer, c)
-
-	// Con esta engancho la cookie a los headers
-	context.Writer.Header().Add("Set-Cookie", c.String())
 
 	return http.StatusOK, restaurants
 }
@@ -260,7 +238,7 @@ func (r *MongoUsersRepository) UpdateProfile(context *gin.Context) (statusCode i
 
 	filter := bson.M{"id": id}
 	update := bson.M{
-		"$set": bson.M{"role": newUser.Role, "name": newUser.Name, "email": newUser.Email,
+		"$set": bson.M{"name": newUser.Name, "email": newUser.Email,
 			"password": password, "phone": newUser.Phone,
 			"address": newUser.Address, "menu": newUser.Menu},
 	}
@@ -269,15 +247,11 @@ func (r *MongoUsersRepository) UpdateProfile(context *gin.Context) (statusCode i
 		return http.StatusBadRequest, err.Error()
 	}
 
-	updatedUser := models.User{
-		Id:       id,
-		Role:     newUser.Role,
-		Email:    newUser.Email,
-		Name:     newUser.Name,
-		Password: newUser.Password,
-		Phone:    newUser.Phone,
-		Address:  newUser.Address,
-		Menu:     newUser.Menu,
+	var updatedUser models.User
+
+	userFilter := bson.M{"id": id}
+	if err := r.users.FindOne(context, userFilter).Decode(&updatedUser); err != nil {
+		return http.StatusNotFound, err.Error()
 	}
 
 	return http.StatusOK, gin.H{"message": "Updated successfully", "user": services.UserToDomain(updatedUser)}
