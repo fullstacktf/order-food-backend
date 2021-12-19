@@ -30,3 +30,14 @@ func SetUserCookie(context *gin.Context, user models.User) (string, error) {
 
 	return token, nil
 }
+
+func UnsetUserCookie(context *gin.Context) {
+	c := &http.Cookie{
+		Name:    "token",
+		Value:   "",
+		Path:    "/",
+		Expires: time.Unix(0, 0),
+	}
+
+	http.SetCookie(context.Writer, c)
+}
