@@ -82,7 +82,7 @@ func (r *MongoUsersRepository) SignInUser(context *gin.Context) (statusCode int,
 	http.SetCookie(context.Writer, c)
 	context.Request.Header.Add("Set-Cookie", c.String())
 
-	return http.StatusOK, token
+	return http.StatusOK, gin.H{"token": token, "user": services.UserToDomain(dbUser)}
 }
 
 // POST - http://localhost:3000/auth/signOutUser
@@ -111,6 +111,27 @@ func (r *MongoUsersRepository) FindRestaurants(context *gin.Context) (statusCode
 	if err := foundRestaurants.All(context, &restaurants); err != nil {
 		return http.StatusConflict, err.Error()
 	}
+
+	expirationTime := time.Now().Add(time.Hour * 8760)
+	token, err := services.GenerateJWT(restaurants[0].Email, restaurants[0].Id.Hex(), string(restaurants[0].Role), expirationTime.Unix())
+	if err != nil {
+		return http.StatusInternalServerError, err.Error()
+	}
+
+	c := &http.Cookie{
+		Name:     "token",
+		Value:    token,
+		Path:     "/",
+		Expires:  expirationTime,
+		SameSite: http.SameSiteLaxMode,
+		Secure:   true,
+	}
+
+	// Con esta cookie ya podemos limitar las acciones segun quien tenga cookie o no
+	http.SetCookie(context.Writer, c)
+
+	// Con esta engancho la cookie a los headers
+	context.Writer.Header().Add("Set-Cookie", c.String())
 
 	return http.StatusOK, restaurants
 }

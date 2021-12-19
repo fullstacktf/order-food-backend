@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetUserCookie(context *gin.Context, user models.User) error {
+func SetUserCookie(context *gin.Context, user models.User) (string, error) {
 	expirationTime := time.Now().Add(time.Hour * 8760)
 	token, err := GenerateJWT(
 		user.Email,
@@ -17,7 +17,7 @@ func SetUserCookie(context *gin.Context, user models.User) error {
 		expirationTime.Unix(),
 	)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	c := &http.Cookie{
@@ -28,5 +28,5 @@ func SetUserCookie(context *gin.Context, user models.User) error {
 	}
 	http.SetCookie(context.Writer, c)
 
-	return nil
+	return token, nil
 }
