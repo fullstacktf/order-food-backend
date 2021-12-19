@@ -28,12 +28,18 @@ func NewMongoOrdersRepository(db *mongo.Database) *MongoOrdersRepository {
 // GET - http://localhost:3000/profile/orders
 func (r *MongoOrdersRepository) FindOrders(context *gin.Context) (statusCode int, response interface{}) {
 	// Checking permissions
-	c, err := context.Cookie("token")
-	if err != nil {
-		return http.StatusUnauthorized, gin.H{"error": "Not enough permissions"}
+	var userToken dtos.UserToken
+
+	context.BindJSON(&userToken)
+
+	validate := validator.New()
+	if err := validate.Struct(userToken); err != nil {
+		validatorError := err.(validator.ValidationErrors).Error()
+		errorMessage := "Cannot get orders, required fields not provided\n" + validatorError
+		return http.StatusBadRequest, gin.H{"error": errorMessage}
 	}
 
-	t, _ := jwt.Parse(c, nil)
+	t, _ := jwt.Parse(userToken.Token, nil)
 	encodedId := t.Claims.(jwt.MapClaims)["id"]
 	requesterId := fmt.Sprintf("%v", encodedId)
 
@@ -59,12 +65,18 @@ func (r *MongoOrdersRepository) FindOrders(context *gin.Context) (statusCode int
 // GET - http://localhost:3000/profile/orders/:id
 func (r *MongoOrdersRepository) GetOrderById(context *gin.Context) (statusCode int, response interface{}) {
 	// Checking permissions
-	c, err := context.Cookie("token")
-	if err != nil {
-		return http.StatusUnauthorized, gin.H{"error": "Not enough permissions"}
+	var userToken dtos.UserToken
+
+	context.BindJSON(&userToken)
+
+	validate := validator.New()
+	if err := validate.Struct(userToken); err != nil {
+		validatorError := err.(validator.ValidationErrors).Error()
+		errorMessage := "Cannot get orders, required fields not provided\n" + validatorError
+		return http.StatusBadRequest, gin.H{"error": errorMessage}
 	}
 
-	t, _ := jwt.Parse(c, nil)
+	t, _ := jwt.Parse(userToken.Token, nil)
 	encodedId := t.Claims.(jwt.MapClaims)["id"]
 	requesterId := fmt.Sprintf("%v", encodedId)
 
@@ -91,21 +103,6 @@ func (r *MongoOrdersRepository) GetOrderById(context *gin.Context) (statusCode i
 
 // POST - http://localhost:3000/restaurants/:id/order
 func (r *MongoOrdersRepository) CreateOrder(context *gin.Context) (statusCode int, response interface{}) {
-	// Checking permissions
-	c, err := context.Cookie("token")
-	if err != nil {
-		return http.StatusUnauthorized, gin.H{"error": "Not enough permissions"}
-	}
-
-	t, _ := jwt.Parse(c, nil)
-	encodedId := t.Claims.(jwt.MapClaims)["id"]
-	requesterId := fmt.Sprintf("%v", encodedId)
-
-	clientId, err := primitive.ObjectIDFromHex(requesterId)
-	if err != nil {
-		return http.StatusUnauthorized, gin.H{"error": "Not enough permissions"}
-	}
-
 	validate := validator.New()
 	var newOrder dtos.OrderCreate
 
@@ -115,6 +112,15 @@ func (r *MongoOrdersRepository) CreateOrder(context *gin.Context) (statusCode in
 		validatorError := err.(validator.ValidationErrors).Error()
 		errorMessage := "Cannot create order, required fields not provided\n" + validatorError
 		return http.StatusBadRequest, gin.H{"error": errorMessage}
+	}
+
+	t, _ := jwt.Parse(newOrder.Token, nil)
+	encodedId := t.Claims.(jwt.MapClaims)["id"]
+	requesterId := fmt.Sprintf("%v", encodedId)
+
+	clientId, err := primitive.ObjectIDFromHex(requesterId)
+	if err != nil {
+		return http.StatusUnauthorized, gin.H{"error": "Not enough permissions"}
 	}
 
 	restaurantId, err := primitive.ObjectIDFromHex(context.Param("id"))
@@ -150,21 +156,6 @@ func (r *MongoOrdersRepository) CreateOrder(context *gin.Context) (statusCode in
 
 // PUT - http://localhost:3000/orders/:id
 func (r *MongoOrdersRepository) UpdateClientOrder(context *gin.Context) (statusCode int, response interface{}) {
-	// Checking permissions
-	c, err := context.Cookie("token")
-	if err != nil {
-		return http.StatusUnauthorized, gin.H{"error": "Not enough permissions"}
-	}
-
-	t, _ := jwt.Parse(c, nil)
-	encodedId := t.Claims.(jwt.MapClaims)["id"]
-	requesterId := fmt.Sprintf("%v", encodedId)
-
-	restaurantId, err := primitive.ObjectIDFromHex(requesterId)
-	if err != nil {
-		return http.StatusUnauthorized, gin.H{"error": "Not enough permissions"}
-	}
-
 	validate := validator.New()
 	var newOrder dtos.OrderUpdate
 
@@ -174,6 +165,15 @@ func (r *MongoOrdersRepository) UpdateClientOrder(context *gin.Context) (statusC
 		validatorError := err.(validator.ValidationErrors).Error()
 		errorMessage := "Cannot update order, required fields not provided\n" + validatorError
 		return http.StatusBadRequest, gin.H{"error": errorMessage}
+	}
+
+	t, _ := jwt.Parse(newOrder.Token, nil)
+	encodedId := t.Claims.(jwt.MapClaims)["id"]
+	requesterId := fmt.Sprintf("%v", encodedId)
+
+	restaurantId, err := primitive.ObjectIDFromHex(requesterId)
+	if err != nil {
+		return http.StatusUnauthorized, gin.H{"error": "Not enough permissions"}
 	}
 
 	orderId, err := primitive.ObjectIDFromHex(context.Param("id"))
@@ -199,12 +199,18 @@ func (r *MongoOrdersRepository) UpdateClientOrder(context *gin.Context) (statusC
 // GET - http://localhost:3000/orders
 func (r *MongoOrdersRepository) FindClientOrders(context *gin.Context) (statusCode int, response interface{}) {
 	// Checking permissions
-	c, err := context.Cookie("token")
-	if err != nil {
-		return http.StatusUnauthorized, gin.H{"error": "Not enough permissions"}
+	var userToken dtos.UserToken
+
+	context.BindJSON(&userToken)
+
+	validate := validator.New()
+	if err := validate.Struct(userToken); err != nil {
+		validatorError := err.(validator.ValidationErrors).Error()
+		errorMessage := "Cannot get orders, required fields not provided\n" + validatorError
+		return http.StatusBadRequest, gin.H{"error": errorMessage}
 	}
 
-	t, _ := jwt.Parse(c, nil)
+	t, _ := jwt.Parse(userToken.Token, nil)
 	encodedId := t.Claims.(jwt.MapClaims)["id"]
 	requesterId := fmt.Sprintf("%v", encodedId)
 
