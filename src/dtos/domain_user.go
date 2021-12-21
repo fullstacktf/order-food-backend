@@ -14,5 +14,5 @@ type DomainUser struct {
 	Email   string             `json:"email" bson:"email"`
 	Phone   int                `json:"phone" bson:"phone"`
 	Address []models.Address   `json:"address" bson:"address"`
-	Menu    []models.Product   `json:"menu,omitempty" bson:"menu,omitempty"`
+	Menu    []models.Product   `json:"menu" bson:"menu"`
 }
