@@ -164,18 +164,9 @@ func (r *MongoUsersRepository) GetClientById(context *gin.Context) (statusCode i
 
 // GET - http://localhost:3000/profile/:id
 func (r *MongoUsersRepository) GetProfileById(context *gin.Context) (statusCode int, response interface{}) {
-	var token dtos.UserToken
+	token := context.Query("token")
 
-	context.BindJSON(&token)
-
-	validate := validator.New()
-	if err := validate.Struct(token); err != nil {
-		validatorError := err.(validator.ValidationErrors).Error()
-		errorMessage := "Cannot update user, required fields not provided\n" + validatorError
-		return http.StatusBadRequest, errorMessage
-	}
-
-	t, _ := jwt.Parse(token.Token, nil)
+	t, _ := jwt.Parse(token, nil)
 	encodedId := t.Claims.(jwt.MapClaims)["id"]
 	requesterId := fmt.Sprintf("%v", encodedId)
 
