@@ -23,23 +23,11 @@ func NewMongoOrdersRepository(db *mongo.Database) *MongoOrdersRepository {
 	return &MongoOrdersRepository{orders: db.Collection("orders")}
 }
 
-// any_role methods
-
 // GET - http://localhost:3000/profile/orders
 func (r *MongoOrdersRepository) FindOrders(context *gin.Context) (statusCode int, response interface{}) {
-	// Checking permissions
-	var userToken dtos.UserToken
+	token := context.Query("token")
 
-	context.BindJSON(&userToken)
-
-	validate := validator.New()
-	if err := validate.Struct(userToken); err != nil {
-		validatorError := err.(validator.ValidationErrors).Error()
-		errorMessage := "Cannot get orders, required fields not provided\n" + validatorError
-		return http.StatusBadRequest, gin.H{"error": errorMessage}
-	}
-
-	t, _ := jwt.Parse(userToken.Token, nil)
+	t, _ := jwt.Parse(token, nil)
 	encodedId := t.Claims.(jwt.MapClaims)["id"]
 	requesterId := fmt.Sprintf("%v", encodedId)
 
@@ -64,19 +52,9 @@ func (r *MongoOrdersRepository) FindOrders(context *gin.Context) (statusCode int
 
 // GET - http://localhost:3000/profile/orders/:id
 func (r *MongoOrdersRepository) GetOrderById(context *gin.Context) (statusCode int, response interface{}) {
-	// Checking permissions
-	var userToken dtos.UserToken
+	token := context.Query("token")
 
-	context.BindJSON(&userToken)
-
-	validate := validator.New()
-	if err := validate.Struct(userToken); err != nil {
-		validatorError := err.(validator.ValidationErrors).Error()
-		errorMessage := "Cannot get orders, required fields not provided\n" + validatorError
-		return http.StatusBadRequest, gin.H{"error": errorMessage}
-	}
-
-	t, _ := jwt.Parse(userToken.Token, nil)
+	t, _ := jwt.Parse(token, nil)
 	encodedId := t.Claims.(jwt.MapClaims)["id"]
 	requesterId := fmt.Sprintf("%v", encodedId)
 
@@ -152,8 +130,6 @@ func (r *MongoOrdersRepository) CreateOrder(context *gin.Context) (statusCode in
 	return http.StatusCreated, gin.H{"success": "Order " + id.Hex() + " created"}
 }
 
-// restaurant_role methods
-
 // PUT - http://localhost:3000/orders/:id
 func (r *MongoOrdersRepository) UpdateClientOrder(context *gin.Context) (statusCode int, response interface{}) {
 	validate := validator.New()
@@ -198,19 +174,9 @@ func (r *MongoOrdersRepository) UpdateClientOrder(context *gin.Context) (statusC
 
 // GET - http://localhost:3000/orders
 func (r *MongoOrdersRepository) FindClientOrders(context *gin.Context) (statusCode int, response interface{}) {
-	// Checking permissions
-	var userToken dtos.UserToken
+	token := context.Query("token")
 
-	context.BindJSON(&userToken)
-
-	validate := validator.New()
-	if err := validate.Struct(userToken); err != nil {
-		validatorError := err.(validator.ValidationErrors).Error()
-		errorMessage := "Cannot get orders, required fields not provided\n" + validatorError
-		return http.StatusBadRequest, gin.H{"error": errorMessage}
-	}
-
-	t, _ := jwt.Parse(userToken.Token, nil)
+	t, _ := jwt.Parse(token, nil)
 	encodedId := t.Claims.(jwt.MapClaims)["id"]
 	requesterId := fmt.Sprintf("%v", encodedId)
 
