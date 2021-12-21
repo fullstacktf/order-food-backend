@@ -25,14 +25,15 @@ func NewMongoUsersRepository(db *mongo.Database) *MongoUsersRepository {
 	return &MongoUsersRepository{users: db.Collection("users")}
 }
 
+// check if exists any user with same email, cause emails must be unique
 func (r *MongoUsersRepository) DoesUserExists(u models.User) bool {
-	// check if exists any user with same email, cause emails must be unique
 	var result bson.M
 
 	filter := bson.M{"email": u.Email}
 	if err := r.users.FindOne(context.TODO(), filter).Decode(&result); err == nil {
 		return true
 	}
+
 	return false
 }
 
@@ -87,13 +88,6 @@ func (r *MongoUsersRepository) Login(context *gin.Context) (statusCode int, resp
 	}
 
 	return http.StatusOK, gin.H{"token": token, "user": services.UserToDomain(dbUser)}
-}
-
-// POST - http://localhost:3000/auth/logout
-func (r *MongoUsersRepository) Logout(context *gin.Context) (statusCode int, response interface{}) {
-	services.UnsetUserCookie(context)
-
-	return http.StatusOK, gin.H{"message": "Successfully logged out"}
 }
 
 // GET - http://localhost:3000/restaurants
@@ -281,29 +275,20 @@ func (r *MongoUsersRepository) UpdateProfile(context *gin.Context) (statusCode i
 
 // DELETE - http://localhost:3000/profile/:id
 func (r *MongoUsersRepository) DeleteAccount(context *gin.Context) (statusCode int, response interface{}) {
-	id, err := primitive.ObjectIDFromHex(context.Param("id"))
-	if err != nil {
-		errorMessage := "Bad request, " + context.Param("id") + " is not a valid ID"
-		return http.StatusBadRequest, gin.H{"error": errorMessage}
-	}
+	token := context.Query("token")
 
-	var userToken dtos.UserToken
-
-	context.BindJSON(&userToken)
-
-	validate := validator.New()
-	if err := validate.Struct(userToken); err != nil {
-		validatorError := err.(validator.ValidationErrors).Error()
-		errorMessage := "Cannot get orders, required fields not provided\n" + validatorError
-		return http.StatusBadRequest, gin.H{"error": errorMessage}
-	}
-
-	t, _ := jwt.Parse(userToken.Token, nil)
+	t, _ := jwt.Parse(token, nil)
 	encodedId := t.Claims.(jwt.MapClaims)["id"]
 	requesterId := fmt.Sprintf("%v", encodedId)
 
 	if requesterId != context.Param("id") {
 		return http.StatusUnauthorized, gin.H{"error": "Not enough permissions"}
+	}
+
+	id, err := primitive.ObjectIDFromHex(context.Param("id"))
+	if err != nil {
+		errorMessage := "Bad request, " + context.Param("id") + " is not a valid ID"
+		return http.StatusBadRequest, gin.H{"error": errorMessage}
 	}
 
 	filter := bson.M{"id": id}
@@ -315,22 +300,11 @@ func (r *MongoUsersRepository) DeleteAccount(context *gin.Context) (statusCode i
 	return http.StatusOK, id.Hex()
 }
 
-// restaurant_role methods
 // GET - http://localhost:3000/products
 func (r *MongoUsersRepository) FindProducts(context *gin.Context) (statusCode int, response interface{}) {
-	// Checking permissions
-	var userToken dtos.UserToken
+	token := context.Query("token")
 
-	context.BindJSON(&userToken)
-
-	validate := validator.New()
-	if err := validate.Struct(userToken); err != nil {
-		validatorError := err.(validator.ValidationErrors).Error()
-		errorMessage := "Cannot get orders, required fields not provided\n" + validatorError
-		return http.StatusBadRequest, gin.H{"error": errorMessage}
-	}
-
-	t, _ := jwt.Parse(userToken.Token, nil)
+	t, _ := jwt.Parse(token, nil)
 	encodedId := t.Claims.(jwt.MapClaims)["id"]
 	requesterId := fmt.Sprintf("%v", encodedId)
 

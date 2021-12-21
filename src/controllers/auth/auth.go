@@ -12,6 +12,5 @@ func Routes(r *gin.Engine, db database.DB) {
 	{
 		authGroup.POST("/register", handlers.Register(db.UsersRepository))
 		authGroup.POST("/login", handlers.Login(db.UsersRepository))
-		authGroup.POST("/logout", handlers.Logout(db.UsersRepository))
 	}
 }
