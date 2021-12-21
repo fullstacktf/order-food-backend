@@ -127,7 +127,7 @@ func (r *MongoOrdersRepository) CreateOrder(context *gin.Context) (statusCode in
 		return http.StatusBadRequest, err.Error()
 	}
 
-	return http.StatusCreated, gin.H{"success": "Order " + id.Hex() + " created"}
+	return http.StatusCreated, order
 }
 
 // PUT - http://localhost:3000/orders/:id
