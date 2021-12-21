@@ -162,6 +162,43 @@ func (r *MongoUsersRepository) GetClientById(context *gin.Context) (statusCode i
 	return http.StatusOK, &client
 }
 
+// GET - http://localhost:3000/profile/:id
+func (r *MongoUsersRepository) GetProfileById(context *gin.Context) (statusCode int, response interface{}) {
+	var token dtos.UserToken
+
+	context.BindJSON(&token)
+
+	validate := validator.New()
+	if err := validate.Struct(token); err != nil {
+		validatorError := err.(validator.ValidationErrors).Error()
+		errorMessage := "Cannot update user, required fields not provided\n" + validatorError
+		return http.StatusBadRequest, errorMessage
+	}
+
+	t, _ := jwt.Parse(token.Token, nil)
+	encodedId := t.Claims.(jwt.MapClaims)["id"]
+	requesterId := fmt.Sprintf("%v", encodedId)
+
+	if requesterId != context.Param("id") {
+		return http.StatusUnauthorized, "Not enough permissions"
+	}
+
+	var user models.User
+
+	id, err := primitive.ObjectIDFromHex(context.Param("id"))
+	if err != nil {
+		errorMessage := "Bad request, " + context.Param("id") + " is not a valid ID"
+		return http.StatusBadRequest, errorMessage
+	}
+
+	filter := bson.M{"id": id}
+	if err := r.users.FindOne(context, filter).Decode(&user); err != nil {
+		return http.StatusNotFound, err.Error()
+	}
+
+	return http.StatusOK, &user
+}
+
 // GET - http://localhost:3000/restaurants/:id/products
 func (r *MongoUsersRepository) GetRestaurantProducts(context *gin.Context) (statusCode int, response interface{}) {
 	var restaurant models.User
